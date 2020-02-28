@@ -105,8 +105,8 @@ __webpack_require__.r(__webpack_exports__);
           $.each(_this.allPosts, function (k1, post1) {
             $.each(post1.files, function (key1, file1) {
               if (file1.category === 'checked') {
-                arr1.push(key1);
-                item1.push(key1);
+                arr1.push(file1.id);
+                item1.push(file1.id);
               }
             });
           });
@@ -115,8 +115,8 @@ __webpack_require__.r(__webpack_exports__);
           $.each(_this.myPosts, function (k2, post2) {
             $.each(post2.files, function (key2, file2) {
               if (file2.category === 'checked') {
-                arr2.push(key2);
-                item2.push(key2);
+                arr2.push(file2.id);
+                item2.push(file2.id);
               }
             });
           });
