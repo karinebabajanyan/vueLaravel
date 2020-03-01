@@ -96,8 +96,8 @@
                         $.each(this.allPosts, function(k1, post1) {
                             $.each(post1.files, function(key1, file1) {
                                 if(file1.category==='checked'){
-                                    arr1.push(file1.id)
-                                    item1.push(file1.id);
+                                    arr1.push(key1)
+                                    item1.push(key1);
                                 }
                             });
                         });
@@ -106,13 +106,14 @@
                         $.each(this.myPosts, function(k2, post2) {
                             $.each(post2.files, function(key2, file2) {
                                 if(file2.category==='checked'){
-                                    arr2.push(file2.id)
-                                    item2.push(file2.id)
+                                    arr2.push(key2)
+                                    item2.push(key2)
                                 }
                             });
                         });
                         this.slide2=arr2
                         this.cover2=item2
+                        console.log(this.slide2)
                     }
                 }).catch((error) => {
                     this.errors = error.response.data

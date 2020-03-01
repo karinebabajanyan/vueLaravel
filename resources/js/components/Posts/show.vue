@@ -46,8 +46,14 @@
                     if(response.status === 200)
                     {
                         console.log(response)
-
+                        let id=0;
                         this.post = response.data.post
+                        $.each(this.post.files, function(k, file) {
+                            if(file.category==='checked'){
+                                id=file.id;
+                            }
+                        });
+                        this.cover=id;
                     }
                 }).catch((error) => {
                     this.errors = error.response.data
@@ -57,7 +63,6 @@
         created() {
             this.showData()
             this.slide=parseInt(this.$route.query.cover);
-            this.cover=parseInt(this.$route.query.cover);
         }
     }
 </script>

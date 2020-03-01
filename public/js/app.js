@@ -210,7 +210,6 @@
 
 module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
 
-
 /***/ }),
 
 /***/ "./node_modules/axios/lib/adapters/xhr.js":
@@ -96222,13 +96221,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   }, {
     path: '/posts/create',
     component: vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('posts-create', function () {
-      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/Posts/create.vue */ "./resources/js/components/Posts/create.vue"));
+      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/Posts/create.vue */ "./resources/js/components/Posts/create.vue"));
     }),
     name: 'posts.create'
   }, {
     path: '/posts/show',
     component: vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('posts-show', function () {
-      return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./components/Posts/show.vue */ "./resources/js/components/Posts/show.vue"));
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./components/Posts/show.vue */ "./resources/js/components/Posts/show.vue"));
     }),
     name: 'posts.show',
     props: true
@@ -96263,8 +96262,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\projects\vueLaravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\projects\vueLaravel\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\OSPanel\domains\vuelaravel\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\OSPanel\domains\vuelaravel\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

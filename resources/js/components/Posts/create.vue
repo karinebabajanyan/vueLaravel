@@ -64,7 +64,7 @@
                 const config = { headers: { 'Content-Type': 'multipart/form-data'} };
                 document.getElementById('files').value=[];
                 // let currentObj = this;
-                axios.post('/api/posts/',this.form,config)
+                axios.post('/api/posts',this.form,config)
                     .then(response=>{
                         window.location.href = '/posts';
                     })

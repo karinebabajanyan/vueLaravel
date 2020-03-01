@@ -105,8 +105,8 @@ __webpack_require__.r(__webpack_exports__);
           $.each(_this.allPosts, function (k1, post1) {
             $.each(post1.files, function (key1, file1) {
               if (file1.category === 'checked') {
-                arr1.push(file1.id);
-                item1.push(file1.id);
+                arr1.push(key1);
+                item1.push(key1);
               }
             });
           });
@@ -115,13 +115,14 @@ __webpack_require__.r(__webpack_exports__);
           $.each(_this.myPosts, function (k2, post2) {
             $.each(post2.files, function (key2, file2) {
               if (file2.category === 'checked') {
-                arr2.push(file2.id);
-                item2.push(file2.id);
+                arr2.push(key2);
+                item2.push(key2);
               }
             });
           });
           _this.slide2 = arr2;
           _this.cover2 = item2;
+          console.log(_this.slide2);
         }
       })["catch"](function (error) {
         _this.errors = error.response.data;
@@ -147,7 +148,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.img-fluid{\n    height: 100% !important;\n}\n", ""]);
+exports.push([module.i, "\n.img-fluid{\r\n    height: 100% !important;\n}\r\n", ""]);
 
 // exports
 

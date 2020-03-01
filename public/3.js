@@ -54,8 +54,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       id: '',
       post: [],
-      // title: '',
-      // description: '',
+      title: '',
+      description: '',
       form: new FormData(),
       files: [],
       isClicked: false,
@@ -72,8 +72,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/posts/' + this.$route.query.id).then(function (response) {
         if (response.status === 200) {
-          console.log(response);
           _this.post = response.data.post;
+          _this.title = _this.post.title;
+          _this.description = _this.post.description;
         }
       })["catch"](function (error) {
         _this.errors = error.response.data;
@@ -123,30 +124,71 @@ __webpack_require__.r(__webpack_exports__);
           _loop(_i);
         }
       }
-
-      console.log(this.$refs);
     },
 
     /*
       Handles the deleting of files
     */
     handleFilesRemove: function handleFilesRemove(key) {
-      console.log(this.checked);
+      var index = this.index.indexOf(key);
+      this.$refs.image[key].parentElement.parentElement.style.display = 'none';
+      this.$refs.image[key].src = '';
+      this.files.splice(index, 1);
+
+      if ('new' + key === this.checked) {
+        if (this.index[this.index.length - 1] === key) {
+          this.checked = 'old' + this.post.files[0].id;
+        } else {
+          this.index.splice(index, 1);
+          this.checked = 'new' + this.index[index];
+        }
+      } else {
+        this.index.splice(index, 1);
+      }
     },
     handleFilesDelete: function handleFilesDelete(key) {
       var _this3 = this;
 
-      // console.log(this.post.files[key].id);
       axios["delete"]('/api/posts/' + this.post.files[key].id + '/files').then(function (response) {
         if (response.status === 200) {
-          // this.fetchData()  // to refresh table..
-          console.log(response);
+          _this3.showData(); // to refresh table..
+
+
+          if ('old' + _this3.post.files[key].id === _this3.checked) {
+            if (_this3.post.files.length - 1 === key) {
+              _this3.checked = 'new' + _this3.index[0];
+            } else {
+              _this3.checked = 'old' + _this3.post.files[key + 1].id;
+            }
+          }
         }
       })["catch"](function (error) {
         _this3.errors = error.response.data;
       });
     },
-    formSubmit: function formSubmit() {}
+    formSubmit: function formSubmit() {
+      for (var i = 0; i < this.files.length; i++) {
+        this.form.append('pictures[]', this.files[i]);
+        console.log(this.files[i]);
+      }
+
+      this.form.append('title', this.title);
+      this.form.append('description', this.description);
+      this.form.append('checked', this.checked);
+      var config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      document.getElementById('files').value = []; // let currentObj = this;
+
+      axios.put('/api/posts/' + this.post.id, this.form, config).then(function (response) {
+        console.log(response); //                        window.location.href = '/posts';
+      })["catch"](function (error) {
+        console.log(error);
+      });
+      this.form = new FormData();
+    }
   },
   created: function created() {
     this.checked = 'old' + parseInt(this.$route.query.cover);
@@ -221,12 +263,12 @@ var render = function() {
                         ],
                         attrs: { type: "radio", name: "check", id: "old" + k },
                         domProps: {
-                          value: "old" + k,
-                          checked: _vm._q(_vm.checked, "old" + k)
+                          value: "old" + image.id,
+                          checked: _vm._q(_vm.checked, "old" + image.id)
                         },
                         on: {
                           change: function($event) {
-                            _vm.checked = "old" + k
+                            _vm.checked = "old" + image.id
                           }
                         }
                       }),
@@ -332,19 +374,19 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.post.title,
-                expression: "post.title"
+                value: _vm.title,
+                expression: "title"
               }
             ],
             staticClass: "form-control",
             attrs: { type: "text" },
-            domProps: { value: _vm.post.title },
+            domProps: { value: _vm.title },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.post, "title", $event.target.value)
+                _vm.title = $event.target.value
               }
             }
           }),
@@ -356,18 +398,18 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.post.description,
-                expression: "post.description"
+                value: _vm.description,
+                expression: "description"
               }
             ],
             staticClass: "form-control",
-            domProps: { value: _vm.post.description },
+            domProps: { value: _vm.description },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.post, "description", $event.target.value)
+                _vm.description = $event.target.value
               }
             }
           }),

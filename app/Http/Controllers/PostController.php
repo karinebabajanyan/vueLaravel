@@ -70,7 +70,10 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
+        return response()->json([
+            'message' => $request->title
+        ], 200);
     }
 
     /**
@@ -83,10 +86,10 @@ class PostController extends Controller
     {
         if($category==='files'){
             File::find($id)->delete();
-            dd($id);
         }
-//        dd($category);
-        //
+        return response()->json([
+            'message' => 'Success'
+        ], 200);
     }
 
     /**

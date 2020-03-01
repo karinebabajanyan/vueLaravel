@@ -11,7 +11,7 @@
                     <div class="img-upload-preview">
                         <div v-for="(image, k) in post.files" class="cc-selector-2 previewImage" v-show="seen">
                             <div>
-                                <input type="radio" name="check" :id="'old'+k"  :value="'old'+k" v-model="checked">
+                                <input type="radio" name="check" :id="'old'+k"  :value="'old'+image.id" v-model="checked">
                                 <label class="preview drinkcard-cc" :for="'old'+k"><img :src="image.path"/></label>
                                 <i @click="handleFilesDelete(k)">x</i>
                             </div>
@@ -25,9 +25,9 @@
                         </div>
                     </div>
                     <label style=" width: 100%;">Title:</label>
-                    <input type="text" class="form-control" v-model="post.title">
+                    <input type="text" class="form-control" v-model="title">
                     <label>Description:</label>
-                    <textarea class="form-control" v-model="post.description"></textarea>
+                    <textarea class="form-control" v-model="description"></textarea>
 
                     <button class="btn btn-primary" @click="formSubmit" style="margin-top: 10px">Submit</button>
                 </div>
@@ -45,8 +45,8 @@
             return{
                 id:'',
                 post:[],
-                // title: '',
-                // description: '',
+                 title: '',
+                 description: '',
                 form: new FormData,
                 files: [],
                 isClicked:false,
@@ -62,9 +62,9 @@
                 axios.get('/api/posts/'+this.$route.query.id).then(response => {
                     if(response.status === 200)
                     {
-                        console.log(response)
-
                         this.post = response.data.post
+                        this.title=this.post.title
+                        this.description=this.post.description;
                     }
                 }).catch((error) => {
                     this.errors = error.response.data
@@ -101,28 +101,66 @@
                         reader.readAsDataURL(this.images[i]);
                     }
                 }
-                console.log(this.$refs);
             },
             /*
               Handles the deleting of files
             */
             handleFilesRemove(key){
-                console.log(this.checked)
+                let index=this.index.indexOf(key);
+                this.$refs.image[key].parentElement.parentElement.style.display='none'
+                this.$refs.image[key].src='';
+                this.files.splice(index,1)
+                if('new'+key===this.checked){
+                    if(this.index[this.index.length-1] === key) {
+                        this.checked='old'+this.post.files[0].id
+                    } else {
+                        this.index.splice(index,1)
+                        this.checked='new'+this.index[index];
+                    }
+                }else{
+                    this.index.splice(index,1)
+                }
             },
             handleFilesDelete(key){
-                // console.log(this.post.files[key].id);
                 axios.delete('/api/posts/'+this.post.files[key].id+'/files' ).then(response => {
                     if(response.status === 200)
                     {
-                        // this.fetchData()  // to refresh table..
-                        console.log(response)
+                         this.showData()  // to refresh table..
+                        if('old'+this.post.files[key].id===this.checked){
+                            if(this.post.files.length-1 === key) {
+                                this.checked='new'+this.index[0]
+
+                            } else {
+                                this.checked='old'+this.post.files[key+1].id
+                            }
+                        }
                     }
                 }).catch((error) => {
                     this.errors = error.response.data
                 })
             },
             formSubmit(){
+                for(let i=0; i<this.files.length;i++){
 
+                    this.form.append('pictures[]',this.files[i]);
+                    console.log(this.files[i]);
+                }
+                this.form.append('title',this.title);
+                this.form.append('description',this.description);
+                this.form.append('checked',this.checked);
+                const config = { headers: { 'Content-Type': 'multipart/form-data'} };
+                document.getElementById('files').value=[];
+                // let currentObj = this;
+
+                axios.put('/api/posts/'+this.post.id,this.form,config)
+                    .then(response=>{
+                        console.log(response)
+//                        window.location.href = '/posts';
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
+                this.form=new FormData
             }
         },
         created() {
