@@ -149,7 +149,7 @@ __webpack_require__.r(__webpack_exports__);
     handleFilesDelete: function handleFilesDelete(key) {
       var _this3 = this;
 
-      axios["delete"]('/api/posts/' + this.post.files[key].id + '/files').then(function (response) {
+      axios.post('/api/posts/' + this.post.files[key].id).then(function (response) {
         if (response.status === 200) {
           _this3.showData(); // to refresh table..
 
@@ -175,6 +175,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.append('title', this.title);
       this.form.append('description', this.description);
       this.form.append('checked', this.checked);
+      this.form.append("_method", 'patch');
       var config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -182,8 +183,9 @@ __webpack_require__.r(__webpack_exports__);
       };
       document.getElementById('files').value = []; // let currentObj = this;
 
-      axios.put('/api/posts/' + this.post.id, this.form, config).then(function (response) {
-        console.log(response); //                        window.location.href = '/posts';
+      console.log(this.form);
+      axios.post('/api/posts/' + this.post.id, this.form).then(function (response) {
+        window.location.href = '/posts';
       })["catch"](function (error) {
         console.log(error);
       });

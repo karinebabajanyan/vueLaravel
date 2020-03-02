@@ -18,4 +18,4 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 });
 
 Route::resource('posts', 'PostController')->middleware('auth');
-Route::delete('posts/{post}/{category}','PostController@destroy')->name('posts.destroy')->middleware('auth');
+Route::post('posts/{post}/','PostController@deleteImage')->name('posts.deleteImage')->middleware('auth');

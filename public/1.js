@@ -37,7 +37,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {//
   },
@@ -46,7 +45,9 @@ __webpack_require__.r(__webpack_exports__);
       id: '',
       slide: 0,
       cover: 0,
-      post: []
+      post: [],
+      postUpdate: false,
+      postDelete: false
     };
   },
   methods: {
@@ -55,9 +56,12 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/posts/' + this.$route.query.id).then(function (response) {
         if (response.status === 200) {
-          console.log(response);
           var id = 0;
           _this.post = response.data.post;
+          _this.postUpdate = response.data.update;
+          _this.postDelete = response.data["delete"];
+          console.log(_this.postUpdate);
+          console.log(_this.postDelete);
           $.each(_this.post.files, function (k, file) {
             if (file.category === 'checked') {
               id = file.id;
@@ -67,6 +71,17 @@ __webpack_require__.r(__webpack_exports__);
         }
       })["catch"](function (error) {
         _this.errors = error.response.data;
+      });
+    },
+    deletePost: function deletePost(item) {
+      var _this2 = this;
+
+      axios["delete"]('/api/posts/' + item.id).then(function (response) {
+        if (response.status === 200) {
+          window.location.href = '/posts';
+        }
+      })["catch"](function (error) {
+        _this2.errors = error.response.data;
       });
     }
   },
@@ -206,18 +221,35 @@ var render = function() {
               _c(
                 "p",
                 [
-                  _c(
-                    "router-link",
-                    {
-                      attrs: {
-                        to: {
-                          name: "posts.edit",
-                          query: { id: _vm.post.id, cover: _vm.cover }
-                        }
-                      }
-                    },
-                    [_vm._v("Edit")]
-                  )
+                  _vm.postUpdate
+                    ? _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "posts.edit",
+                              query: { id: _vm.post.id, cover: _vm.cover }
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.postDelete
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.deletePost(_vm.post)
+                            }
+                          }
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    : _vm._e()
                 ],
                 1
               )

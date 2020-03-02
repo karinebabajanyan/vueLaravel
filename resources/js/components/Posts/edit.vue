@@ -122,7 +122,7 @@
                 }
             },
             handleFilesDelete(key){
-                axios.delete('/api/posts/'+this.post.files[key].id+'/files' ).then(response => {
+                axios.post('/api/posts/'+this.post.files[key].id ).then(response => {
                     if(response.status === 200)
                     {
                          this.showData()  // to refresh table..
@@ -148,14 +148,14 @@
                 this.form.append('title',this.title);
                 this.form.append('description',this.description);
                 this.form.append('checked',this.checked);
+                this.form.append("_method", 'patch');
                 const config = { headers: { 'Content-Type': 'multipart/form-data'} };
                 document.getElementById('files').value=[];
                 // let currentObj = this;
-
-                axios.put('/api/posts/'+this.post.id,this.form,config)
+                console.log(this.form)
+                axios.post('/api/posts/'+this.post.id, this.form)
                     .then(response=>{
-                        console.log(response)
-//                        window.location.href = '/posts';
+                       window.location.href = '/posts';
                     })
                     .catch(function (error) {
                         console.log(error)

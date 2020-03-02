@@ -17,9 +17,8 @@
                     <h4 class="media-heading">{{post.title}}</h4>
                     <p class="desc">{{post.description}}</p>
                     <p>
-                        <router-link :to="{ name: 'posts.edit', query: { id: post.id, cover: cover }}">Edit</router-link>
-                        <!--<router-link to="/posts/show" :id="post.id">See More</router-link>-->
-                        <!--<a href="{{route('posts.show',['id' => $post->id])}}">See More</a>-->
+                        <router-link v-if="postUpdate" :to="{ name: 'posts.edit', query: { id: post.id, cover: cover }}">Edit</router-link>
+                        <button @click="deletePost(post)" class="btn btn-danger" v-if="postDelete" >Delete</button>
                     </p>
                 </b-media>
             </ul>
@@ -38,6 +37,8 @@
                 slide:0,
                 cover:0,
                 post:[],
+                postUpdate:false,
+                postDelete:false
             }
         },
         methods: {
@@ -45,9 +46,12 @@
                 axios.get('/api/posts/'+this.$route.query.id).then(response => {
                     if(response.status === 200)
                     {
-                        console.log(response)
                         let id=0;
                         this.post = response.data.post
+                        this.postUpdate = response.data.update
+                        this.postDelete = response.data.delete
+                        console.log(this.postUpdate)
+                        console.log(this.postDelete)
                         $.each(this.post.files, function(k, file) {
                             if(file.category==='checked'){
                                 id=file.id;
@@ -59,6 +63,16 @@
                     this.errors = error.response.data
                 })
             },
+            deletePost(item) {
+                axios.delete('/api/posts/'+item.id).then(response => {
+                    if(response.status === 200)
+                    {
+                        window.location.href = '/posts';
+                    }
+                }).catch((error) => {
+                    this.errors = error.response.data
+                })
+            }
         },
         created() {
             this.showData()

@@ -5,6 +5,13 @@ use App\File;
 use App\Http\Services\FileService;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Http\Requests\Posts\PostStoreRequest;
+use App\Http\Requests\Posts\PostUpdateRequest;
+use App\Http\Requests\Posts\PostEditRequest;
+use App\Http\Requests\Posts\PostShowRequest;
+use App\Http\Requests\Posts\PostDestroyRequest;
+use App\Http\Requests\Posts\PostDeleteImageRequest;
+use App\Http\Requests\Posts\PostSoftDeleteShowRequest;
 
 class PostController extends Controller
 {
@@ -26,7 +33,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, FileService $fileService)
+    public function store(PostStoreRequest $request, FileService $fileService)
     {
         $id=auth()->id();
         $uploadedFiles=$request->pics;
@@ -55,10 +62,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,PostShowRequest $request)
     {
         $post = Post::with('files')->find($id);
-        return response()->json(['post' => $post], 200);
+        $update=auth()->user()->can('update',$post);
+        $delete=auth()->user()->can('delete',$post);
+        return response()->json(['post' => $post,'update'=>$update,'delete'=>$delete], 200);
     }
 
     /**
@@ -68,11 +77,39 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostUpdateRequest $request, $id, FileService $fileService)
     {
-        dd($request->all());
+        $post=Post::with('files')->find($id);
+        $post->update([
+            'title'=>$request->title,
+            'description'=>$request->description
+        ]);
+        $file=$post->files;
+        if($file->where('category','checked')->first()){
+            $file->where('category','checked')->first()->update(['category'=>NULL]);
+        }
+        if($request->checked){
+                if(strpos($request->checked,'old')===false){
+                    foreach ($request->pictures as $key=>$files){
+                        $category=null;
+                        if($request->checked=='new'.$key){
+                            $category ='checked';
+                        }
+                        $fileService->saveFile($files, $post, $category);
+                    }
+                }else {
+                    if($request->pictures) {
+                        foreach ($request->pictures as $key => $files) {
+                            $category = null;
+                            $fileService->saveFile($files, $post, $category);
+                        }
+                    }
+                    $fileId=(int)preg_replace("/[^0-9\.]/", '',  $request->checked);
+                    $file->find($fileId)->update(['category' => 'checked']);
+                }
+        }
         return response()->json([
-            'message' => $request->title
+            'message' => 'Updated successfully'
         ], 200);
     }
 
@@ -82,14 +119,20 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,$category)
+    public function destroy($id,PostDestroyRequest $request)
     {
-        if($category==='files'){
-            File::find($id)->delete();
-        }
-        return response()->json([
-            'message' => 'Success'
-        ], 200);
+            $post=Post::find($id);
+            if($post){
+                if($post->files){
+                    foreach ($post->files as $key=>$file){
+                        $file->delete();
+                    }
+                }
+                $post->delete();
+            }
+            return response()->json([
+                'message' => 'Success'
+            ], 200);
     }
 
     /**
@@ -98,8 +141,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteImage($id)
+    public function deleteImage($id,PostDeleteImageRequest $request)
     {
-//       dd($id);
+            File::find($id)->delete();
+            return response()->json([
+                'message' => 'Success'
+            ], 200);
     }
 }
