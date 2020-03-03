@@ -23,8 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-//        return view('home');
+        $user=auth()->user();
+        return response()->json(['user' => $user], 200);
     }
     public function posting()
     {
