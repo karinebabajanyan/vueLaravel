@@ -14,7 +14,7 @@ class PostDestroyRequest extends FormRequest
      */
     public function authorize()
     {
-        $post = $this->route()->parameter('post');
+        $post = Post::find($this->route()->parameter('post'));
         return auth()->user()->can('delete', $post);
     }
 

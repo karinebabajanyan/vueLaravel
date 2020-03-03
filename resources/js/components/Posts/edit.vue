@@ -128,7 +128,11 @@
                          this.showData()  // to refresh table..
                         if('old'+this.post.files[key].id===this.checked){
                             if(this.post.files.length-1 === key) {
-                                this.checked='new'+this.index[0]
+                                if(this.index.length===0){
+                                    this.checked='old'+this.post.files[0].id
+                                }else{
+                                    this.checked='new'+this.index[0]
+                                }
 
                             } else {
                                 this.checked='old'+this.post.files[key+1].id

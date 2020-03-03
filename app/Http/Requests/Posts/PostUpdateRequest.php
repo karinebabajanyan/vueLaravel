@@ -15,7 +15,8 @@ class PostUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $post = $this->route()->parameter('post');
+//        dd($this->route());
+        $post = Post::find($this->route()->parameter('post'));
         return auth()->user()->can('update', $post);
     }
 
@@ -28,7 +29,6 @@ class PostUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'files' => 'required',
             'description'=>'required',
         ];
     }
