@@ -17,6 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/{view?}', 'HomeController@posting')->where('view', '(.*)')->name('posting');

@@ -17,5 +17,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+
 Route::resource('posts', 'PostController')->middleware('auth');
 Route::post('posts/{post}/','PostController@deleteImage')->name('posts.deleteImage')->middleware('auth');

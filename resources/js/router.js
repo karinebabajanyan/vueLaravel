@@ -13,6 +13,11 @@ export const router = new VueRouter({
                 name: 'welcome',
             },
             {
+                path: '/home',
+                component: Vue.component('home', () => import('./components/HomeComponent.vue')),
+                name: 'home',
+            },
+            {
                 path: '/posts',
                 component: Vue.component('posts-index', () => import('./components/Posts/index.vue')),
                 name: 'posts.index',

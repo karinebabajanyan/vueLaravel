@@ -17,6 +17,7 @@
 
 <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/imageUpload.css') }}">
+    <link rel="stylesheet" href="{{ url(mix('/css/app.css')) }}">
 
 </head>
 <body>
@@ -55,6 +56,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
+                                <a class="dropdown-item" href="{{ url('/posts') }}">{{ __('Posts') }}</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -72,10 +75,11 @@
         </div>
     </nav>
     <main class="py-4">
+        <div id="posts">
+        </div>
         @yield('content')
-        @yield('script')
-        @yield('style')
     </main>
 </div>
+<script src="{{ mix('js/app.js') }}" async defer></script>
 </body>
 </html>

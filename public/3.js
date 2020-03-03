@@ -1,508 +1,62 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/edit.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Posts/edit.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Posts/create.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {//
-  },
-  data: function data() {
-    return {
-      id: '',
-      post: [],
-      title: '',
-      description: '',
-      form: new FormData(),
-      files: [],
-      isClicked: false,
-      index: [],
-      images: [],
-      $refs: '',
-      checked: 0,
-      seen: true
-    };
-  },
-  methods: {
-    showData: function showData() {
-      var _this = this;
-
-      axios.get('/api/posts/' + this.$route.query.id).then(function (response) {
-        if (response.status === 200) {
-          _this.post = response.data.post;
-          _this.title = _this.post.title;
-          _this.description = _this.post.description;
-        }
-      })["catch"](function (error) {
-        _this.errors = error.response.data;
-      });
-    },
-
-    /*
-     Handles the uploading of files
-    */
-    handleFilesUpload: function handleFilesUpload(e) {
-      var _this2 = this;
-
-      var vm = this;
-      this.index = [];
-      var files = e.target.files;
-      this.images = [];
-
-      for (var j = 0; j < this.files.length; j++) {
-        this.images.push(this.files[j]);
-        this.index.push(j);
-      }
-
-      var length = this.index.length;
-
-      for (var i = 0; i < files.length; i++) {
-        this.files.push(files[i]);
-        this.images.push(files[i]);
-        this.index.push(length + i);
-      }
-
-      if (!this.files.length || this.post.files.length + this.files.length > 10) {
-        this.seen = false;
-        location.reload();
-      } else {
-        var _loop = function _loop(_i) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-            _this2.$refs.image[_i].parentElement.parentElement.style.display = 'block';
-            _this2.$refs.image[_i].src = reader.result;
-          };
-
-          reader.readAsDataURL(_this2.images[_i]);
-        };
-
-        for (var _i = 0; _i < this.images.length; _i++) {
-          _loop(_i);
-        }
-      }
-    },
-
-    /*
-      Handles the deleting of files
-    */
-    handleFilesRemove: function handleFilesRemove(key) {
-      var index = this.index.indexOf(key);
-      this.$refs.image[key].parentElement.parentElement.style.display = 'none';
-      this.$refs.image[key].src = '';
-      this.files.splice(index, 1);
-
-      if ('new' + key === this.checked) {
-        if (this.index[this.index.length - 1] === key) {
-          this.checked = 'old' + this.post.files[0].id;
-        } else {
-          this.index.splice(index, 1);
-          this.checked = 'new' + this.index[index];
-        }
-      } else {
-        this.index.splice(index, 1);
-      }
-    },
-    handleFilesDelete: function handleFilesDelete(key) {
-      var _this3 = this;
-
-      axios.post('/api/posts/' + this.post.files[key].id).then(function (response) {
-        if (response.status === 200) {
-          _this3.showData(); // to refresh table..
-
-
-          if ('old' + _this3.post.files[key].id === _this3.checked) {
-            if (_this3.post.files.length - 1 === key) {
-              _this3.checked = 'new' + _this3.index[0];
-            } else {
-              _this3.checked = 'old' + _this3.post.files[key + 1].id;
-            }
-          }
-        }
-      })["catch"](function (error) {
-        _this3.errors = error.response.data;
-      });
-    },
-    formSubmit: function formSubmit() {
-      for (var i = 0; i < this.files.length; i++) {
-        this.form.append('pictures[]', this.files[i]);
-        console.log(this.files[i]);
-      }
-
-      this.form.append('title', this.title);
-      this.form.append('description', this.description);
-      this.form.append('checked', this.checked);
-      this.form.append("_method", 'patch');
-      var config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      };
-      document.getElementById('files').value = []; // let currentObj = this;
-
-      console.log(this.form);
-      axios.post('/api/posts/' + this.post.id, this.form).then(function (response) {
-        window.location.href = '/posts';
-      })["catch"](function (error) {
-        console.log(error);
-      });
-      this.form = new FormData();
-    }
-  },
-  created: function created() {
-    this.checked = 'old' + parseInt(this.$route.query.cover);
-    this.showData();
-  }
-});
+eval("__webpack_require__.r(__webpack_exports__);\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  mounted: function mounted() {\n    console.log('Component mounted.');\n  },\n  data: function data() {\n    return {\n      title: '',\n      description: '',\n      form: new FormData(),\n      files: [],\n      isClicked: false,\n      index: [],\n      images: [],\n      $refs: '',\n      checked: 0,\n      seen: true\n    };\n  },\n  methods: {\n    /*\n       Handles the posting of files\n    */\n    formSubmit: function formSubmit(e) {\n      // e.preventDefault();\n      for (var i = 0; i < this.files.length; i++) {\n        this.form.append('pics[]', this.files[i]);\n      }\n\n      this.form.append('title', this.title);\n      this.form.append('description', this.description);\n      this.form.append('checked', this.checked);\n      var config = {\n        headers: {\n          'Content-Type': 'multipart/form-data'\n        }\n      };\n      document.getElementById('files').value = []; // let currentObj = this;\n\n      axios.post('/api/posts', this.form, config).then(function (response) {\n        window.location.href = '/posts';\n      })[\"catch\"](function (error) {\n        console.log(error);\n      });\n      this.form = new FormData();\n    },\n\n    /*\n       Handles the uploading of files\n    */\n    handleFilesUpload: function handleFilesUpload(e) {\n      var _this = this;\n\n      var vm = this;\n      this.index = [];\n      var files = e.target.files;\n      this.images = [];\n\n      for (var j = 0; j < this.files.length; j++) {\n        this.images.push(this.files[j]);\n        this.index.push(j);\n      }\n\n      var length = this.index.length;\n\n      for (var i = 0; i < files.length; i++) {\n        this.files.push(files[i]);\n        this.images.push(files[i]);\n        this.index.push(length + i);\n      }\n\n      if (!this.files.length || this.files.length > 10) {\n        this.seen = false;\n        location.reload();\n      } else {\n        var _loop = function _loop(_i) {\n          var reader = new FileReader();\n\n          reader.onload = function (e) {\n            _this.$refs.image[_i].parentElement.parentElement.style.display = 'block';\n            _this.$refs.image[_i].src = reader.result;\n          };\n\n          reader.readAsDataURL(_this.images[_i]);\n        };\n\n        for (var _i = 0; _i < this.images.length; _i++) {\n          _loop(_i);\n        }\n      }\n    },\n\n    /*\n      Handles the deleting of files\n    */\n    handleFilesRemove: function handleFilesRemove(key) {\n      var index = this.index.indexOf(key);\n      this.$refs.image[key].parentElement.parentElement.style.display = 'none';\n      this.$refs.image[key].src = '';\n      this.files.splice(index, 1);\n\n      if (key === this.checked) {\n        if (this.index[this.index.length - 1] === key) {\n          this.index.splice(index, 1);\n\n          if (this.$el.querySelector('input[type=\"radio\"]') !== null) {\n            this.checked = this.$el.querySelector('input[type=\"radio\"]').value;\n          }\n        } else {\n          this.index.splice(index, 1);\n          this.checked = this.index[index];\n        }\n      } else {\n        this.index.splice(index, 1);\n      }\n    }\n  }\n});//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vcmVzb3VyY2VzL2pzL2NvbXBvbmVudHMvUG9zdHMvY3JlYXRlLnZ1ZT9lNTJkIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBZ0NBO0FBQ0EsU0FEQSxxQkFDQTtBQUNBO0FBQ0EsR0FIQTtBQUlBLE1BSkEsa0JBSUE7QUFDQTtBQUNBLGVBREE7QUFFQSxxQkFGQTtBQUdBLDBCQUhBO0FBSUEsZUFKQTtBQUtBLHNCQUxBO0FBTUEsZUFOQTtBQU9BLGdCQVBBO0FBUUEsZUFSQTtBQVNBLGdCQVRBO0FBVUE7QUFWQTtBQVlBLEdBakJBO0FBa0JBO0FBQ0E7OztBQUdBLGNBSkEsc0JBSUEsQ0FKQSxFQUlBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7O0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNBLGtEQVZBLENBV0E7O0FBQ0Esa0RBQ0EsSUFEQSxDQUNBO0FBQ0E7QUFDQSxPQUhBLFdBSUE7QUFDQTtBQUNBLE9BTkE7QUFPQTtBQUNBLEtBeEJBOztBQXlCQTs7O0FBR0EscUJBNUJBLDZCQTRCQSxDQTVCQSxFQTRCQTtBQUFBOztBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUNBOztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBQ0E7QUFDQTtBQUNBO0FBQ0EsT0FIQSxNQUdBO0FBQUEsbUNBQ0EsRUFEQTtBQUVBOztBQUNBO0FBQ0E7QUFDQTtBQUNBLFdBSEE7O0FBSUE7QUFQQTs7QUFDQTtBQUFBO0FBT0E7QUFDQTtBQUNBLEtBeERBOztBQXlEQTs7O0FBR0EscUJBNURBLDZCQTREQSxHQTVEQSxFQTREQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUNBO0FBQ0E7QUFDQTs7QUFDQTtBQUNBO0FBQ0E7QUFDQSxTQUxBLE1BS0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSxPQVZBLE1BVUE7QUFDQTtBQUNBO0FBQ0E7QUE5RUE7QUFsQkEiLCJmaWxlIjoiLi9ub2RlX21vZHVsZXMvYmFiZWwtbG9hZGVyL2xpYi9pbmRleC5qcz8hLi9ub2RlX21vZHVsZXMvdnVlLWxvYWRlci9saWIvaW5kZXguanM/IS4vcmVzb3VyY2VzL2pzL2NvbXBvbmVudHMvUG9zdHMvY3JlYXRlLnZ1ZT92dWUmdHlwZT1zY3JpcHQmbGFuZz1qcyYuanMiLCJzb3VyY2VzQ29udGVudCI6WyI8dGVtcGxhdGU+XHJcbiAgICA8ZGl2IGNsYXNzPVwiY29udGFpbmVyXCI+XHJcbiAgICAgICAgPGRpdiBjbGFzcz1cInJvdyBqdXN0aWZ5LWNvbnRlbnQtY2VudGVyXCI+XHJcbiAgICAgICAgICAgIDxkaXYgc3R5bGU9XCJ3aWR0aDogODAlOyBtYXJnaW46IDAgYXV0bztcIj5cclxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9XCJmb3JtLWdyb3VwXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz1cImxhcmdlLTEyIG1lZGl1bS0xMiBzbWFsbC0xMiBjZWxsXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDxsYWJlbCBjbGFzcz1cImJ0biBidG4tb3V0bGluZS1zZWNvbmRhcnlcIj5GaWxlc1xyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9XCJmaWxlXCIgaWQ9XCJmaWxlc1wiIGFjY2VwdD1cImltYWdlLypcIiBtdWx0aXBsZSBAY2hhbmdlPVwiaGFuZGxlRmlsZXNVcGxvYWRcIi8+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDwvbGFiZWw+XHJcbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzcz1cImltZy11cGxvYWQtcHJldmlld1wiPlxyXG4gICAgICAgICAgICAgICAgICAgICAgICA8ZGl2IHYtZm9yPVwiKGltYWdlLCBrZXkpIGluIGltYWdlc1wiIGNsYXNzPVwiY2Mtc2VsZWN0b3ItMiBwcmV2aWV3SW1hZ2VcIiB2LXNob3c9XCJzZWVuXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxpbnB1dCB0eXBlPVwicmFkaW9cIiBuYW1lPVwiY2hlY2tcIiA6aWQ9XCJrZXlcIiAgOnZhbHVlPVwia2V5XCIgdi1tb2RlbD1cImNoZWNrZWRcIj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGFiZWwgY2xhc3M9XCJwcmV2aWV3IGRyaW5rY2FyZC1jY1wiIDpmb3I9XCJrZXlcIj48aW1nIDpyZWY9XCInaW1hZ2UnXCIvPjwvbGFiZWw+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGkgQGNsaWNrPVwiaGFuZGxlRmlsZXNSZW1vdmUoa2V5KVwiPng8L2k+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPGxhYmVsIHN0eWxlPVwiIHdpZHRoOiAxMDAlO1wiPlRpdGxlOjwvbGFiZWw+XHJcbiAgICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9XCJ0ZXh0XCIgY2xhc3M9XCJmb3JtLWNvbnRyb2xcIiB2LW1vZGVsPVwidGl0bGVcIj5cclxuICAgICAgICAgICAgICAgICAgICA8bGFiZWw+RGVzY3JpcHRpb246PC9sYWJlbD5cclxuICAgICAgICAgICAgICAgICAgICA8dGV4dGFyZWEgY2xhc3M9XCJmb3JtLWNvbnRyb2xcIiB2LW1vZGVsPVwiZGVzY3JpcHRpb25cIj48L3RleHRhcmVhPlxyXG5cclxuICAgICAgICAgICAgICAgICAgICA8YnV0dG9uIGNsYXNzPVwiYnRuIGJ0bi1wcmltYXJ5XCIgQGNsaWNrPVwiZm9ybVN1Ym1pdFwiIHN0eWxlPVwibWFyZ2luLXRvcDogMTBweFwiPlN1Ym1pdDwvYnV0dG9uPlxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgIDwvZGl2PlxyXG4gICAgPC9kaXY+XHJcbjwvdGVtcGxhdGU+XHJcblxyXG48c2NyaXB0PlxyXG4gICAgZXhwb3J0IGRlZmF1bHQge1xyXG4gICAgICAgIG1vdW50ZWQoKSB7XHJcbiAgICAgICAgICAgIGNvbnNvbGUubG9nKCdDb21wb25lbnQgbW91bnRlZC4nKVxyXG4gICAgICAgIH0sXHJcbiAgICAgICAgZGF0YSgpIHtcclxuICAgICAgICAgICAgcmV0dXJuIHtcclxuICAgICAgICAgICAgICAgIHRpdGxlOiAnJyxcclxuICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uOiAnJyxcclxuICAgICAgICAgICAgICAgIGZvcm06IG5ldyBGb3JtRGF0YSxcclxuICAgICAgICAgICAgICAgIGZpbGVzOiBbXSxcclxuICAgICAgICAgICAgICAgIGlzQ2xpY2tlZDpmYWxzZSxcclxuICAgICAgICAgICAgICAgIGluZGV4OiBbXSxcclxuICAgICAgICAgICAgICAgIGltYWdlczogW10sXHJcbiAgICAgICAgICAgICAgICAkcmVmczonJyxcclxuICAgICAgICAgICAgICAgIGNoZWNrZWQ6MCxcclxuICAgICAgICAgICAgICAgIHNlZW46dHJ1ZSxcclxuICAgICAgICAgICAgfTtcclxuICAgICAgICB9LFxyXG4gICAgICAgIG1ldGhvZHM6IHtcclxuICAgICAgICAgICAgLypcclxuICAgICAgICAgICAgICAgSGFuZGxlcyB0aGUgcG9zdGluZyBvZiBmaWxlc1xyXG4gICAgICAgICAgICAqL1xyXG4gICAgICAgICAgICBmb3JtU3VibWl0KGUpIHtcclxuICAgICAgICAgICAgICAgIC8vIGUucHJldmVudERlZmF1bHQoKTtcclxuICAgICAgICAgICAgICAgIGZvcihsZXQgaT0wOyBpPHRoaXMuZmlsZXMubGVuZ3RoO2krKyl7XHJcblxyXG4gICAgICAgICAgICAgICAgICAgIHRoaXMuZm9ybS5hcHBlbmQoJ3BpY3NbXScsdGhpcy5maWxlc1tpXSk7XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICB0aGlzLmZvcm0uYXBwZW5kKCd0aXRsZScsdGhpcy50aXRsZSk7XHJcbiAgICAgICAgICAgICAgICB0aGlzLmZvcm0uYXBwZW5kKCdkZXNjcmlwdGlvbicsdGhpcy5kZXNjcmlwdGlvbik7XHJcbiAgICAgICAgICAgICAgICB0aGlzLmZvcm0uYXBwZW5kKCdjaGVja2VkJyx0aGlzLmNoZWNrZWQpO1xyXG4gICAgICAgICAgICAgICAgY29uc3QgY29uZmlnID0geyBoZWFkZXJzOiB7ICdDb250ZW50LVR5cGUnOiAnbXVsdGlwYXJ0L2Zvcm0tZGF0YSd9IH07XHJcbiAgICAgICAgICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZmlsZXMnKS52YWx1ZT1bXTtcclxuICAgICAgICAgICAgICAgIC8vIGxldCBjdXJyZW50T2JqID0gdGhpcztcclxuICAgICAgICAgICAgICAgIGF4aW9zLnBvc3QoJy9hcGkvcG9zdHMnLHRoaXMuZm9ybSxjb25maWcpXHJcbiAgICAgICAgICAgICAgICAgICAgLnRoZW4ocmVzcG9uc2U9PntcclxuICAgICAgICAgICAgICAgICAgICAgICAgd2luZG93LmxvY2F0aW9uLmhyZWYgPSAnL3Bvc3RzJztcclxuICAgICAgICAgICAgICAgICAgICB9KVxyXG4gICAgICAgICAgICAgICAgICAgIC5jYXRjaChmdW5jdGlvbiAoZXJyb3IpIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgY29uc29sZS5sb2coZXJyb3IpXHJcbiAgICAgICAgICAgICAgICAgICAgfSk7XHJcbiAgICAgICAgICAgICAgICB0aGlzLmZvcm09bmV3IEZvcm1EYXRhXHJcbiAgICAgICAgICAgIH0sXHJcbiAgICAgICAgICAgIC8qXHJcbiAgICAgICAgICAgICAgIEhhbmRsZXMgdGhlIHVwbG9hZGluZyBvZiBmaWxlc1xyXG4gICAgICAgICAgICAqL1xyXG4gICAgICAgICAgICBoYW5kbGVGaWxlc1VwbG9hZChlKXtcclxuICAgICAgICAgICAgICAgIGxldCB2bSA9IHRoaXM7XHJcbiAgICAgICAgICAgICAgICB0aGlzLmluZGV4PVtdO1xyXG4gICAgICAgICAgICAgICAgdmFyIGZpbGVzID0gZS50YXJnZXQuZmlsZXM7XHJcbiAgICAgICAgICAgICAgICB0aGlzLmltYWdlcz1bXTtcclxuICAgICAgICAgICAgICAgIGZvcihsZXQgaj0wO2o8dGhpcy5maWxlcy5sZW5ndGg7aisrKXtcclxuICAgICAgICAgICAgICAgICAgICB0aGlzLmltYWdlcy5wdXNoKHRoaXMuZmlsZXNbal0pXHJcbiAgICAgICAgICAgICAgICAgICAgdGhpcy5pbmRleC5wdXNoKGopO1xyXG4gICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgbGV0IGxlbmd0aD10aGlzLmluZGV4Lmxlbmd0aDtcclxuICAgICAgICAgICAgICAgIGZvciAobGV0IGkgPSAwOyBpIDwgZmlsZXMubGVuZ3RoOyBpKyspIHtcclxuICAgICAgICAgICAgICAgICAgICB0aGlzLmZpbGVzLnB1c2goZmlsZXNbaV0pO1xyXG4gICAgICAgICAgICAgICAgICAgIHRoaXMuaW1hZ2VzLnB1c2goZmlsZXNbaV0pO1xyXG4gICAgICAgICAgICAgICAgICAgIHRoaXMuaW5kZXgucHVzaChsZW5ndGgraSk7XHJcbiAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICBpZiAoIXRoaXMuZmlsZXMubGVuZ3RoIHx8IHRoaXMuZmlsZXMubGVuZ3RoPjEwKXtcclxuICAgICAgICAgICAgICAgICAgICB0aGlzLnNlZW49ZmFsc2VcclxuICAgICAgICAgICAgICAgICAgICBsb2NhdGlvbi5yZWxvYWQoKVxyXG4gICAgICAgICAgICAgICAgfWVsc2V7XHJcbiAgICAgICAgICAgICAgICAgICAgZm9yIChsZXQgaSA9IDA7IGkgPCB0aGlzLmltYWdlcy5sZW5ndGg7IGkrKykge1xyXG4gICAgICAgICAgICAgICAgICAgICAgICBsZXQgcmVhZGVyID0gbmV3IEZpbGVSZWFkZXIoKTtcclxuICAgICAgICAgICAgICAgICAgICAgICAgcmVhZGVyLm9ubG9hZCA9IChlKSA9PiB7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aGlzLiRyZWZzLmltYWdlW2ldLnBhcmVudEVsZW1lbnQucGFyZW50RWxlbWVudC5zdHlsZS5kaXNwbGF5PSdibG9jaydcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRoaXMuJHJlZnMuaW1hZ2VbaV0uc3JjID0gcmVhZGVyLnJlc3VsdDtcclxuICAgICAgICAgICAgICAgICAgICAgICAgfTtcclxuICAgICAgICAgICAgICAgICAgICAgICAgcmVhZGVyLnJlYWRBc0RhdGFVUkwodGhpcy5pbWFnZXNbaV0pO1xyXG4gICAgICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgfSxcclxuICAgICAgICAgICAgLypcclxuICAgICAgICAgICAgICBIYW5kbGVzIHRoZSBkZWxldGluZyBvZiBmaWxlc1xyXG4gICAgICAgICAgICAqL1xyXG4gICAgICAgICAgICBoYW5kbGVGaWxlc1JlbW92ZShrZXkpe1xyXG4gICAgICAgICAgICAgICAgbGV0IGluZGV4PXRoaXMuaW5kZXguaW5kZXhPZihrZXkpO1xyXG4gICAgICAgICAgICAgICAgdGhpcy4kcmVmcy5pbWFnZVtrZXldLnBhcmVudEVsZW1lbnQucGFyZW50RWxlbWVudC5zdHlsZS5kaXNwbGF5PSdub25lJ1xyXG4gICAgICAgICAgICAgICAgdGhpcy4kcmVmcy5pbWFnZVtrZXldLnNyYz0nJztcclxuICAgICAgICAgICAgICAgIHRoaXMuZmlsZXMuc3BsaWNlKGluZGV4LDEpXHJcbiAgICAgICAgICAgICAgICBpZihrZXkgPT09IHRoaXMuY2hlY2tlZCkge1xyXG4gICAgICAgICAgICAgICAgICAgIGlmKHRoaXMuaW5kZXhbdGhpcy5pbmRleC5sZW5ndGgtMV0gPT09IGtleSkge1xyXG4gICAgICAgICAgICAgICAgICAgICAgICB0aGlzLmluZGV4LnNwbGljZShpbmRleCwxKVxyXG4gICAgICAgICAgICAgICAgICAgICAgICBpZih0aGlzLiRlbC5xdWVyeVNlbGVjdG9yKCdpbnB1dFt0eXBlPVwicmFkaW9cIl0nKSE9PW51bGwpe1xyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgdGhpcy5jaGVja2VkPXRoaXMuJGVsLnF1ZXJ5U2VsZWN0b3IoJ2lucHV0W3R5cGU9XCJyYWRpb1wiXScpLnZhbHVlO1xyXG4gICAgICAgICAgICAgICAgICAgICAgICB9XHJcbiAgICAgICAgICAgICAgICAgICAgfSBlbHNlIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgdGhpcy5pbmRleC5zcGxpY2UoaW5kZXgsMSlcclxuICAgICAgICAgICAgICAgICAgICAgICAgdGhpcy5jaGVja2VkPXRoaXMuaW5kZXhbaW5kZXhdO1xyXG4gICAgICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgICAgIH0gZWxzZSB7XHJcbiAgICAgICAgICAgICAgICAgICAgdGhpcy5pbmRleC5zcGxpY2UoaW5kZXgsMSlcclxuICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgfSxcclxuICAgICAgICB9LFxyXG4gICAgfVxyXG48L3NjcmlwdD5cclxuXHJcbjxzdHlsZSBzY29wZWQ+XHJcblxyXG48L3N0eWxlPlxyXG4iXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=script&lang=js&\n");
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true& ***!
-  \*************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticStyle: { width: "80%", margin: "0 auto" } }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-            _c("label", { staticClass: "btn btn-outline-secondary" }, [
-              _vm._v("Files\n                        "),
-              _c("input", {
-                attrs: {
-                  type: "file",
-                  id: "files",
-                  accept: "image/*",
-                  multiple: ""
-                },
-                on: { change: _vm.handleFilesUpload }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "img-upload-preview" },
-            [
-              _vm._l(_vm.post.files, function(image, k) {
-                return _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.seen,
-                        expression: "seen"
-                      }
-                    ],
-                    staticClass: "cc-selector-2 previewImage"
-                  },
-                  [
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.checked,
-                            expression: "checked"
-                          }
-                        ],
-                        attrs: { type: "radio", name: "check", id: "old" + k },
-                        domProps: {
-                          value: "old" + image.id,
-                          checked: _vm._q(_vm.checked, "old" + image.id)
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.checked = "old" + image.id
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "preview drinkcard-cc",
-                          attrs: { for: "old" + k }
-                        },
-                        [_c("img", { attrs: { src: image.path } })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "i",
-                        {
-                          on: {
-                            click: function($event) {
-                              return _vm.handleFilesDelete(k)
-                            }
-                          }
-                        },
-                        [_vm._v("x")]
-                      )
-                    ])
-                  ]
-                )
-              }),
-              _vm._v(" "),
-              _vm._l(_vm.images, function(image, key) {
-                return _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.seen,
-                        expression: "seen"
-                      }
-                    ],
-                    staticClass: "cc-selector-2 previewImage"
-                  },
-                  [
-                    _c("div", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.checked,
-                            expression: "checked"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "check",
-                          id: "new" + key
-                        },
-                        domProps: {
-                          value: "new" + key,
-                          checked: _vm._q(_vm.checked, "new" + key)
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.checked = "new" + key
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "preview drinkcard-cc",
-                          attrs: { for: "new" + key }
-                        },
-                        [_c("img", { ref: "image", refInFor: true })]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "i",
-                        {
-                          on: {
-                            click: function($event) {
-                              return _vm.handleFilesRemove(key)
-                            }
-                          }
-                        },
-                        [_vm._v("x")]
-                      )
-                    ])
-                  ]
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c("label", { staticStyle: { width: "100%" } }, [_vm._v("Title:")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.title,
-                expression: "title"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text" },
-            domProps: { value: _vm.title },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.title = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("label", [_vm._v("Description:")]),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.description,
-                expression: "description"
-              }
-            ],
-            staticClass: "form-control",
-            domProps: { value: _vm.description },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.description = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              staticStyle: { "margin-top": "10px" },
-              on: { click: _vm.formSubmit }
-            },
-            [_vm._v("Submit")]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"render\", function() { return render; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"staticRenderFns\", function() { return staticRenderFns; });\nvar render = function() {\n  var _vm = this\n  var _h = _vm.$createElement\n  var _c = _vm._self._c || _h\n  return _c(\"div\", { staticClass: \"container\" }, [\n    _c(\"div\", { staticClass: \"row justify-content-center\" }, [\n      _c(\"div\", { staticStyle: { width: \"80%\", margin: \"0 auto\" } }, [\n        _c(\"div\", { staticClass: \"form-group\" }, [\n          _c(\"div\", { staticClass: \"large-12 medium-12 small-12 cell\" }, [\n            _c(\"label\", { staticClass: \"btn btn-outline-secondary\" }, [\n              _vm._v(\"Files\\n                        \"),\n              _c(\"input\", {\n                attrs: {\n                  type: \"file\",\n                  id: \"files\",\n                  accept: \"image/*\",\n                  multiple: \"\"\n                },\n                on: { change: _vm.handleFilesUpload }\n              })\n            ])\n          ]),\n          _vm._v(\" \"),\n          _c(\n            \"div\",\n            { staticClass: \"img-upload-preview\" },\n            _vm._l(_vm.images, function(image, key) {\n              return _c(\n                \"div\",\n                {\n                  directives: [\n                    {\n                      name: \"show\",\n                      rawName: \"v-show\",\n                      value: _vm.seen,\n                      expression: \"seen\"\n                    }\n                  ],\n                  staticClass: \"cc-selector-2 previewImage\"\n                },\n                [\n                  _c(\"div\", [\n                    _c(\"input\", {\n                      directives: [\n                        {\n                          name: \"model\",\n                          rawName: \"v-model\",\n                          value: _vm.checked,\n                          expression: \"checked\"\n                        }\n                      ],\n                      attrs: { type: \"radio\", name: \"check\", id: key },\n                      domProps: {\n                        value: key,\n                        checked: _vm._q(_vm.checked, key)\n                      },\n                      on: {\n                        change: function($event) {\n                          _vm.checked = key\n                        }\n                      }\n                    }),\n                    _vm._v(\" \"),\n                    _c(\n                      \"label\",\n                      {\n                        staticClass: \"preview drinkcard-cc\",\n                        attrs: { for: key }\n                      },\n                      [_c(\"img\", { ref: \"image\", refInFor: true })]\n                    ),\n                    _vm._v(\" \"),\n                    _c(\n                      \"i\",\n                      {\n                        on: {\n                          click: function($event) {\n                            return _vm.handleFilesRemove(key)\n                          }\n                        }\n                      },\n                      [_vm._v(\"x\")]\n                    )\n                  ])\n                ]\n              )\n            }),\n            0\n          ),\n          _vm._v(\" \"),\n          _c(\"label\", { staticStyle: { width: \"100%\" } }, [_vm._v(\"Title:\")]),\n          _vm._v(\" \"),\n          _c(\"input\", {\n            directives: [\n              {\n                name: \"model\",\n                rawName: \"v-model\",\n                value: _vm.title,\n                expression: \"title\"\n              }\n            ],\n            staticClass: \"form-control\",\n            attrs: { type: \"text\" },\n            domProps: { value: _vm.title },\n            on: {\n              input: function($event) {\n                if ($event.target.composing) {\n                  return\n                }\n                _vm.title = $event.target.value\n              }\n            }\n          }),\n          _vm._v(\" \"),\n          _c(\"label\", [_vm._v(\"Description:\")]),\n          _vm._v(\" \"),\n          _c(\"textarea\", {\n            directives: [\n              {\n                name: \"model\",\n                rawName: \"v-model\",\n                value: _vm.description,\n                expression: \"description\"\n              }\n            ],\n            staticClass: \"form-control\",\n            domProps: { value: _vm.description },\n            on: {\n              input: function($event) {\n                if ($event.target.composing) {\n                  return\n                }\n                _vm.description = $event.target.value\n              }\n            }\n          }),\n          _vm._v(\" \"),\n          _c(\n            \"button\",\n            {\n              staticClass: \"btn btn-primary\",\n              staticStyle: { \"margin-top\": \"10px\" },\n              on: { click: _vm.formSubmit }\n            },\n            [_vm._v(\"Submit\")]\n          )\n        ])\n      ])\n    ])\n  ])\n}\nvar staticRenderFns = []\nrender._withStripped = true\n\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvY29tcG9uZW50cy9Qb3N0cy9jcmVhdGUudnVlPzIzOTEiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFDQTtBQUNBO0FBQ0E7QUFDQSxvQkFBb0IsMkJBQTJCO0FBQy9DLGVBQWUsNENBQTRDO0FBQzNELGlCQUFpQixlQUFlLGlDQUFpQyxFQUFFO0FBQ25FLG1CQUFtQiw0QkFBNEI7QUFDL0MscUJBQXFCLGtEQUFrRDtBQUN2RSx5QkFBeUIsMkNBQTJDO0FBQ3BFO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCLHFCQUFxQjtBQUNyQixlQUFlO0FBQ2Y7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGFBQWEsb0NBQW9DO0FBQ2pEO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsaUJBQWlCO0FBQ2pCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSw4QkFBOEIsd0NBQXdDO0FBQ3RFO0FBQ0E7QUFDQTtBQUNBLHVCQUF1QjtBQUN2QjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EscUJBQXFCO0FBQ3JCO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSxnQ0FBZ0M7QUFDaEMsdUJBQXVCO0FBQ3ZCLGtDQUFrQywrQkFBK0I7QUFDakU7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSx1QkFBdUI7QUFDdkI7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBLGFBQWE7QUFDYjtBQUNBO0FBQ0E7QUFDQSx1QkFBdUIsZUFBZSxnQkFBZ0IsRUFBRTtBQUN4RDtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0Esb0JBQW9CLGVBQWU7QUFDbkMsdUJBQXVCLG1CQUFtQjtBQUMxQztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsV0FBVztBQUNYO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsdUJBQXVCLHlCQUF5QjtBQUNoRDtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsV0FBVztBQUNYO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSw0QkFBNEIsdUJBQXVCO0FBQ25ELG1CQUFtQjtBQUNuQixhQUFhO0FBQ2I7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwiZmlsZSI6Ii4vbm9kZV9tb2R1bGVzL3Z1ZS1sb2FkZXIvbGliL2xvYWRlcnMvdGVtcGxhdGVMb2FkZXIuanM/IS4vbm9kZV9tb2R1bGVzL3Z1ZS1sb2FkZXIvbGliL2luZGV4LmpzPyEuL3Jlc291cmNlcy9qcy9jb21wb25lbnRzL1Bvc3RzL2NyZWF0ZS52dWU/dnVlJnR5cGU9dGVtcGxhdGUmaWQ9OTFiMjBhYmEmc2NvcGVkPXRydWUmLmpzIiwic291cmNlc0NvbnRlbnQiOlsidmFyIHJlbmRlciA9IGZ1bmN0aW9uKCkge1xuICB2YXIgX3ZtID0gdGhpc1xuICB2YXIgX2ggPSBfdm0uJGNyZWF0ZUVsZW1lbnRcbiAgdmFyIF9jID0gX3ZtLl9zZWxmLl9jIHx8IF9oXG4gIHJldHVybiBfYyhcImRpdlwiLCB7IHN0YXRpY0NsYXNzOiBcImNvbnRhaW5lclwiIH0sIFtcbiAgICBfYyhcImRpdlwiLCB7IHN0YXRpY0NsYXNzOiBcInJvdyBqdXN0aWZ5LWNvbnRlbnQtY2VudGVyXCIgfSwgW1xuICAgICAgX2MoXCJkaXZcIiwgeyBzdGF0aWNTdHlsZTogeyB3aWR0aDogXCI4MCVcIiwgbWFyZ2luOiBcIjAgYXV0b1wiIH0gfSwgW1xuICAgICAgICBfYyhcImRpdlwiLCB7IHN0YXRpY0NsYXNzOiBcImZvcm0tZ3JvdXBcIiB9LCBbXG4gICAgICAgICAgX2MoXCJkaXZcIiwgeyBzdGF0aWNDbGFzczogXCJsYXJnZS0xMiBtZWRpdW0tMTIgc21hbGwtMTIgY2VsbFwiIH0sIFtcbiAgICAgICAgICAgIF9jKFwibGFiZWxcIiwgeyBzdGF0aWNDbGFzczogXCJidG4gYnRuLW91dGxpbmUtc2Vjb25kYXJ5XCIgfSwgW1xuICAgICAgICAgICAgICBfdm0uX3YoXCJGaWxlc1xcbiAgICAgICAgICAgICAgICAgICAgICAgIFwiKSxcbiAgICAgICAgICAgICAgX2MoXCJpbnB1dFwiLCB7XG4gICAgICAgICAgICAgICAgYXR0cnM6IHtcbiAgICAgICAgICAgICAgICAgIHR5cGU6IFwiZmlsZVwiLFxuICAgICAgICAgICAgICAgICAgaWQ6IFwiZmlsZXNcIixcbiAgICAgICAgICAgICAgICAgIGFjY2VwdDogXCJpbWFnZS8qXCIsXG4gICAgICAgICAgICAgICAgICBtdWx0aXBsZTogXCJcIlxuICAgICAgICAgICAgICAgIH0sXG4gICAgICAgICAgICAgICAgb246IHsgY2hhbmdlOiBfdm0uaGFuZGxlRmlsZXNVcGxvYWQgfVxuICAgICAgICAgICAgICB9KVxuICAgICAgICAgICAgXSlcbiAgICAgICAgICBdKSxcbiAgICAgICAgICBfdm0uX3YoXCIgXCIpLFxuICAgICAgICAgIF9jKFxuICAgICAgICAgICAgXCJkaXZcIixcbiAgICAgICAgICAgIHsgc3RhdGljQ2xhc3M6IFwiaW1nLXVwbG9hZC1wcmV2aWV3XCIgfSxcbiAgICAgICAgICAgIF92bS5fbChfdm0uaW1hZ2VzLCBmdW5jdGlvbihpbWFnZSwga2V5KSB7XG4gICAgICAgICAgICAgIHJldHVybiBfYyhcbiAgICAgICAgICAgICAgICBcImRpdlwiLFxuICAgICAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgICAgIGRpcmVjdGl2ZXM6IFtcbiAgICAgICAgICAgICAgICAgICAge1xuICAgICAgICAgICAgICAgICAgICAgIG5hbWU6IFwic2hvd1wiLFxuICAgICAgICAgICAgICAgICAgICAgIHJhd05hbWU6IFwidi1zaG93XCIsXG4gICAgICAgICAgICAgICAgICAgICAgdmFsdWU6IF92bS5zZWVuLFxuICAgICAgICAgICAgICAgICAgICAgIGV4cHJlc3Npb246IFwic2VlblwiXG4gICAgICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICAgIF0sXG4gICAgICAgICAgICAgICAgICBzdGF0aWNDbGFzczogXCJjYy1zZWxlY3Rvci0yIHByZXZpZXdJbWFnZVwiXG4gICAgICAgICAgICAgICAgfSxcbiAgICAgICAgICAgICAgICBbXG4gICAgICAgICAgICAgICAgICBfYyhcImRpdlwiLCBbXG4gICAgICAgICAgICAgICAgICAgIF9jKFwiaW5wdXRcIiwge1xuICAgICAgICAgICAgICAgICAgICAgIGRpcmVjdGl2ZXM6IFtcbiAgICAgICAgICAgICAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZTogXCJtb2RlbFwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICByYXdOYW1lOiBcInYtbW9kZWxcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgdmFsdWU6IF92bS5jaGVja2VkLFxuICAgICAgICAgICAgICAgICAgICAgICAgICBleHByZXNzaW9uOiBcImNoZWNrZWRcIlxuICAgICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICAgIF0sXG4gICAgICAgICAgICAgICAgICAgICAgYXR0cnM6IHsgdHlwZTogXCJyYWRpb1wiLCBuYW1lOiBcImNoZWNrXCIsIGlkOiBrZXkgfSxcbiAgICAgICAgICAgICAgICAgICAgICBkb21Qcm9wczoge1xuICAgICAgICAgICAgICAgICAgICAgICAgdmFsdWU6IGtleSxcbiAgICAgICAgICAgICAgICAgICAgICAgIGNoZWNrZWQ6IF92bS5fcShfdm0uY2hlY2tlZCwga2V5KVxuICAgICAgICAgICAgICAgICAgICAgIH0sXG4gICAgICAgICAgICAgICAgICAgICAgb246IHtcbiAgICAgICAgICAgICAgICAgICAgICAgIGNoYW5nZTogZnVuY3Rpb24oJGV2ZW50KSB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIF92bS5jaGVja2VkID0ga2V5XG4gICAgICAgICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICB9KSxcbiAgICAgICAgICAgICAgICAgICAgX3ZtLl92KFwiIFwiKSxcbiAgICAgICAgICAgICAgICAgICAgX2MoXG4gICAgICAgICAgICAgICAgICAgICAgXCJsYWJlbFwiLFxuICAgICAgICAgICAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIHN0YXRpY0NsYXNzOiBcInByZXZpZXcgZHJpbmtjYXJkLWNjXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICBhdHRyczogeyBmb3I6IGtleSB9XG4gICAgICAgICAgICAgICAgICAgICAgfSxcbiAgICAgICAgICAgICAgICAgICAgICBbX2MoXCJpbWdcIiwgeyByZWY6IFwiaW1hZ2VcIiwgcmVmSW5Gb3I6IHRydWUgfSldXG4gICAgICAgICAgICAgICAgICAgICksXG4gICAgICAgICAgICAgICAgICAgIF92bS5fdihcIiBcIiksXG4gICAgICAgICAgICAgICAgICAgIF9jKFxuICAgICAgICAgICAgICAgICAgICAgIFwiaVwiLFxuICAgICAgICAgICAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgICAgICAgICAgIG9uOiB7XG4gICAgICAgICAgICAgICAgICAgICAgICAgIGNsaWNrOiBmdW5jdGlvbigkZXZlbnQpIHtcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gX3ZtLmhhbmRsZUZpbGVzUmVtb3ZlKGtleSlcbiAgICAgICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgICAgICAgIH0sXG4gICAgICAgICAgICAgICAgICAgICAgW192bS5fdihcInhcIildXG4gICAgICAgICAgICAgICAgICAgIClcbiAgICAgICAgICAgICAgICAgIF0pXG4gICAgICAgICAgICAgICAgXVxuICAgICAgICAgICAgICApXG4gICAgICAgICAgICB9KSxcbiAgICAgICAgICAgIDBcbiAgICAgICAgICApLFxuICAgICAgICAgIF92bS5fdihcIiBcIiksXG4gICAgICAgICAgX2MoXCJsYWJlbFwiLCB7IHN0YXRpY1N0eWxlOiB7IHdpZHRoOiBcIjEwMCVcIiB9IH0sIFtfdm0uX3YoXCJUaXRsZTpcIildKSxcbiAgICAgICAgICBfdm0uX3YoXCIgXCIpLFxuICAgICAgICAgIF9jKFwiaW5wdXRcIiwge1xuICAgICAgICAgICAgZGlyZWN0aXZlczogW1xuICAgICAgICAgICAgICB7XG4gICAgICAgICAgICAgICAgbmFtZTogXCJtb2RlbFwiLFxuICAgICAgICAgICAgICAgIHJhd05hbWU6IFwidi1tb2RlbFwiLFxuICAgICAgICAgICAgICAgIHZhbHVlOiBfdm0udGl0bGUsXG4gICAgICAgICAgICAgICAgZXhwcmVzc2lvbjogXCJ0aXRsZVwiXG4gICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIF0sXG4gICAgICAgICAgICBzdGF0aWNDbGFzczogXCJmb3JtLWNvbnRyb2xcIixcbiAgICAgICAgICAgIGF0dHJzOiB7IHR5cGU6IFwidGV4dFwiIH0sXG4gICAgICAgICAgICBkb21Qcm9wczogeyB2YWx1ZTogX3ZtLnRpdGxlIH0sXG4gICAgICAgICAgICBvbjoge1xuICAgICAgICAgICAgICBpbnB1dDogZnVuY3Rpb24oJGV2ZW50KSB7XG4gICAgICAgICAgICAgICAgaWYgKCRldmVudC50YXJnZXQuY29tcG9zaW5nKSB7XG4gICAgICAgICAgICAgICAgICByZXR1cm5cbiAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgX3ZtLnRpdGxlID0gJGV2ZW50LnRhcmdldC52YWx1ZVxuICAgICAgICAgICAgICB9XG4gICAgICAgICAgICB9XG4gICAgICAgICAgfSksXG4gICAgICAgICAgX3ZtLl92KFwiIFwiKSxcbiAgICAgICAgICBfYyhcImxhYmVsXCIsIFtfdm0uX3YoXCJEZXNjcmlwdGlvbjpcIildKSxcbiAgICAgICAgICBfdm0uX3YoXCIgXCIpLFxuICAgICAgICAgIF9jKFwidGV4dGFyZWFcIiwge1xuICAgICAgICAgICAgZGlyZWN0aXZlczogW1xuICAgICAgICAgICAgICB7XG4gICAgICAgICAgICAgICAgbmFtZTogXCJtb2RlbFwiLFxuICAgICAgICAgICAgICAgIHJhd05hbWU6IFwidi1tb2RlbFwiLFxuICAgICAgICAgICAgICAgIHZhbHVlOiBfdm0uZGVzY3JpcHRpb24sXG4gICAgICAgICAgICAgICAgZXhwcmVzc2lvbjogXCJkZXNjcmlwdGlvblwiXG4gICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIF0sXG4gICAgICAgICAgICBzdGF0aWNDbGFzczogXCJmb3JtLWNvbnRyb2xcIixcbiAgICAgICAgICAgIGRvbVByb3BzOiB7IHZhbHVlOiBfdm0uZGVzY3JpcHRpb24gfSxcbiAgICAgICAgICAgIG9uOiB7XG4gICAgICAgICAgICAgIGlucHV0OiBmdW5jdGlvbigkZXZlbnQpIHtcbiAgICAgICAgICAgICAgICBpZiAoJGV2ZW50LnRhcmdldC5jb21wb3NpbmcpIHtcbiAgICAgICAgICAgICAgICAgIHJldHVyblxuICAgICAgICAgICAgICAgIH1cbiAgICAgICAgICAgICAgICBfdm0uZGVzY3JpcHRpb24gPSAkZXZlbnQudGFyZ2V0LnZhbHVlXG4gICAgICAgICAgICAgIH1cbiAgICAgICAgICAgIH1cbiAgICAgICAgICB9KSxcbiAgICAgICAgICBfdm0uX3YoXCIgXCIpLFxuICAgICAgICAgIF9jKFxuICAgICAgICAgICAgXCJidXR0b25cIixcbiAgICAgICAgICAgIHtcbiAgICAgICAgICAgICAgc3RhdGljQ2xhc3M6IFwiYnRuIGJ0bi1wcmltYXJ5XCIsXG4gICAgICAgICAgICAgIHN0YXRpY1N0eWxlOiB7IFwibWFyZ2luLXRvcFwiOiBcIjEwcHhcIiB9LFxuICAgICAgICAgICAgICBvbjogeyBjbGljazogX3ZtLmZvcm1TdWJtaXQgfVxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIFtfdm0uX3YoXCJTdWJtaXRcIildXG4gICAgICAgICAgKVxuICAgICAgICBdKVxuICAgICAgXSlcbiAgICBdKVxuICBdKVxufVxudmFyIHN0YXRpY1JlbmRlckZucyA9IFtdXG5yZW5kZXIuX3dpdGhTdHJpcHBlZCA9IHRydWVcblxuZXhwb3J0IHsgcmVuZGVyLCBzdGF0aWNSZW5kZXJGbnMgfSJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&\n");
 
 /***/ }),
 
-/***/ "./resources/js/components/Posts/edit.vue":
-/*!************************************************!*\
-  !*** ./resources/js/components/Posts/edit.vue ***!
-  \************************************************/
+/***/ "./resources/js/components/Posts/create.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Posts/create.vue ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=08f38871&scoped=true& */ "./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true&");
-/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/components/Posts/edit.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "08f38871",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/Posts/edit.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./create.vue?vue&type=template&id=91b20aba&scoped=true& */ \"./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&\");\n/* harmony import */ var _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create.vue?vue&type=script&lang=js& */ \"./resources/js/components/Posts/create.vue?vue&type=script&lang=js&\");\n/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ \"./node_modules/vue-loader/lib/runtime/componentNormalizer.js\");\n\n\n\n\n\n/* normalize component */\n\nvar component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(\n  _create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  _create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__[\"render\"],\n  _create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__[\"staticRenderFns\"],\n  false,\n  null,\n  \"91b20aba\",\n  null\n  \n)\n\n/* hot reload */\nif (false) { var api; }\ncomponent.options.__file = \"resources/js/components/Posts/create.vue\"\n/* harmony default export */ __webpack_exports__[\"default\"] = (component.exports);//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvY29tcG9uZW50cy9Qb3N0cy9jcmVhdGUudnVlP2FiODkiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBaUc7QUFDdkM7QUFDTDs7O0FBR3JEO0FBQ2dHO0FBQ2hHLGdCQUFnQiwyR0FBVTtBQUMxQixFQUFFLDRFQUFNO0FBQ1IsRUFBRSw2RkFBTTtBQUNSLEVBQUUsc0dBQWU7QUFDakI7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7O0FBRUE7QUFDQSxJQUFJLEtBQVUsRUFBRSxZQWlCZjtBQUNEO0FBQ2UsZ0YiLCJmaWxlIjoiLi9yZXNvdXJjZXMvanMvY29tcG9uZW50cy9Qb3N0cy9jcmVhdGUudnVlLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcmVuZGVyLCBzdGF0aWNSZW5kZXJGbnMgfSBmcm9tIFwiLi9jcmVhdGUudnVlP3Z1ZSZ0eXBlPXRlbXBsYXRlJmlkPTkxYjIwYWJhJnNjb3BlZD10cnVlJlwiXG5pbXBvcnQgc2NyaXB0IGZyb20gXCIuL2NyZWF0ZS52dWU/dnVlJnR5cGU9c2NyaXB0Jmxhbmc9anMmXCJcbmV4cG9ydCAqIGZyb20gXCIuL2NyZWF0ZS52dWU/dnVlJnR5cGU9c2NyaXB0Jmxhbmc9anMmXCJcblxuXG4vKiBub3JtYWxpemUgY29tcG9uZW50ICovXG5pbXBvcnQgbm9ybWFsaXplciBmcm9tIFwiIS4uLy4uLy4uLy4uL25vZGVfbW9kdWxlcy92dWUtbG9hZGVyL2xpYi9ydW50aW1lL2NvbXBvbmVudE5vcm1hbGl6ZXIuanNcIlxudmFyIGNvbXBvbmVudCA9IG5vcm1hbGl6ZXIoXG4gIHNjcmlwdCxcbiAgcmVuZGVyLFxuICBzdGF0aWNSZW5kZXJGbnMsXG4gIGZhbHNlLFxuICBudWxsLFxuICBcIjkxYjIwYWJhXCIsXG4gIG51bGxcbiAgXG4pXG5cbi8qIGhvdCByZWxvYWQgKi9cbmlmIChtb2R1bGUuaG90KSB7XG4gIHZhciBhcGkgPSByZXF1aXJlKFwiQzpcXFxccHJvamVjdHNcXFxcdnVlTGFyYXZlbFxcXFxub2RlX21vZHVsZXNcXFxcdnVlLWhvdC1yZWxvYWQtYXBpXFxcXGRpc3RcXFxcaW5kZXguanNcIilcbiAgYXBpLmluc3RhbGwocmVxdWlyZSgndnVlJykpXG4gIGlmIChhcGkuY29tcGF0aWJsZSkge1xuICAgIG1vZHVsZS5ob3QuYWNjZXB0KClcbiAgICBpZiAoIWFwaS5pc1JlY29yZGVkKCc5MWIyMGFiYScpKSB7XG4gICAgICBhcGkuY3JlYXRlUmVjb3JkKCc5MWIyMGFiYScsIGNvbXBvbmVudC5vcHRpb25zKVxuICAgIH0gZWxzZSB7XG4gICAgICBhcGkucmVsb2FkKCc5MWIyMGFiYScsIGNvbXBvbmVudC5vcHRpb25zKVxuICAgIH1cbiAgICBtb2R1bGUuaG90LmFjY2VwdChcIi4vY3JlYXRlLnZ1ZT92dWUmdHlwZT10ZW1wbGF0ZSZpZD05MWIyMGFiYSZzY29wZWQ9dHJ1ZSZcIiwgZnVuY3Rpb24gKCkge1xuICAgICAgYXBpLnJlcmVuZGVyKCc5MWIyMGFiYScsIHtcbiAgICAgICAgcmVuZGVyOiByZW5kZXIsXG4gICAgICAgIHN0YXRpY1JlbmRlckZuczogc3RhdGljUmVuZGVyRm5zXG4gICAgICB9KVxuICAgIH0pXG4gIH1cbn1cbmNvbXBvbmVudC5vcHRpb25zLl9fZmlsZSA9IFwicmVzb3VyY2VzL2pzL2NvbXBvbmVudHMvUG9zdHMvY3JlYXRlLnZ1ZVwiXG5leHBvcnQgZGVmYXVsdCBjb21wb25lbnQuZXhwb3J0cyJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/components/Posts/create.vue\n");
 
 /***/ }),
 
-/***/ "./resources/js/components/Posts/edit.vue?vue&type=script&lang=js&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/components/Posts/edit.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************/
+/***/ "./resources/js/components/Posts/create.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Posts/create.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/edit.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./create.vue?vue&type=script&lang=js& */ \"./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=script&lang=js&\");\n/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__[\"default\"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[\"default\"]); //# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvY29tcG9uZW50cy9Qb3N0cy9jcmVhdGUudnVlPzQ2MzkiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBLHdDQUE0TCxDQUFnQixrUEFBRyxFQUFDIiwiZmlsZSI6Ii4vcmVzb3VyY2VzL2pzL2NvbXBvbmVudHMvUG9zdHMvY3JlYXRlLnZ1ZT92dWUmdHlwZT1zY3JpcHQmbGFuZz1qcyYuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgbW9kIGZyb20gXCItIS4uLy4uLy4uLy4uL25vZGVfbW9kdWxlcy9iYWJlbC1sb2FkZXIvbGliL2luZGV4LmpzPz9yZWYtLTQtMCEuLi8uLi8uLi8uLi9ub2RlX21vZHVsZXMvdnVlLWxvYWRlci9saWIvaW5kZXguanM/P3Z1ZS1sb2FkZXItb3B0aW9ucyEuL2NyZWF0ZS52dWU/dnVlJnR5cGU9c2NyaXB0Jmxhbmc9anMmXCI7IGV4cG9ydCBkZWZhdWx0IG1vZDsgZXhwb3J0ICogZnJvbSBcIi0hLi4vLi4vLi4vLi4vbm9kZV9tb2R1bGVzL2JhYmVsLWxvYWRlci9saWIvaW5kZXguanM/P3JlZi0tNC0wIS4uLy4uLy4uLy4uL25vZGVfbW9kdWxlcy92dWUtbG9hZGVyL2xpYi9pbmRleC5qcz8/dnVlLWxvYWRlci1vcHRpb25zIS4vY3JlYXRlLnZ1ZT92dWUmdHlwZT1zY3JpcHQmbGFuZz1qcyZcIiJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/components/Posts/create.vue?vue&type=script&lang=js&\n");
 
 /***/ }),
 
-/***/ "./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true&":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true& ***!
-  \*******************************************************************************************/
+/***/ "./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true& ***!
+  \*********************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=template&id=08f38871&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/edit.vue?vue&type=template&id=08f38871&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_08f38871_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./create.vue?vue&type=template&id=91b20aba&scoped=true& */ \"./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"render\", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__[\"render\"]; });\n\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"staticRenderFns\", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_91b20aba_scoped_true___WEBPACK_IMPORTED_MODULE_0__[\"staticRenderFns\"]; });\n\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9yZXNvdXJjZXMvanMvY29tcG9uZW50cy9Qb3N0cy9jcmVhdGUudnVlPzc3NjciXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBIiwiZmlsZSI6Ii4vcmVzb3VyY2VzL2pzL2NvbXBvbmVudHMvUG9zdHMvY3JlYXRlLnZ1ZT92dWUmdHlwZT10ZW1wbGF0ZSZpZD05MWIyMGFiYSZzY29wZWQ9dHJ1ZSYuanMiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgKiBmcm9tIFwiLSEuLi8uLi8uLi8uLi9ub2RlX21vZHVsZXMvdnVlLWxvYWRlci9saWIvbG9hZGVycy90ZW1wbGF0ZUxvYWRlci5qcz8/dnVlLWxvYWRlci1vcHRpb25zIS4uLy4uLy4uLy4uL25vZGVfbW9kdWxlcy92dWUtbG9hZGVyL2xpYi9pbmRleC5qcz8/dnVlLWxvYWRlci1vcHRpb25zIS4vY3JlYXRlLnZ1ZT92dWUmdHlwZT10ZW1wbGF0ZSZpZD05MWIyMGFiYSZzY29wZWQ9dHJ1ZSZcIiJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./resources/js/components/Posts/create.vue?vue&type=template&id=91b20aba&scoped=true&\n");
 
 /***/ })
 
