@@ -4,18 +4,19 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 export const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     routes:
         [
             {
                 path: '/',
-                component: Vue.component('welcome', () => import('./components/Welcome.vue')),
-                name: 'welcome',
+                redirect:'/profile',
+                component: Vue.component('app', () => import('./components/App.vue')),
+                name: 'app',
             },
             {
-                path: '/home',
-                component: Vue.component('home', () => import('./components/HomeComponent.vue')),
-                name: 'home',
+                path: '/profile',
+                component: Vue.component('users', () => import('./components/Users/index.vue')),
+                name: 'users',
             },
             {
                 path: '/posts',

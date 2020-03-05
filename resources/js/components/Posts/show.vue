@@ -50,8 +50,6 @@
                         this.post = response.data.post
                         this.postUpdate = response.data.update
                         this.postDelete = response.data.delete
-                        console.log(this.postUpdate)
-                        console.log(this.postDelete)
                         $.each(this.post.files, function(k, file) {
                             if(file.category==='checked'){
                                 id=file.id;
@@ -67,7 +65,7 @@
                 axios.delete('/api/posts/'+item.id).then(response => {
                     if(response.status === 200)
                     {
-                        window.location.href = '/posts';
+                        this.$router.push({ name: 'posts.index' })
                     }
                 }).catch((error) => {
                     this.errors = error.response.data

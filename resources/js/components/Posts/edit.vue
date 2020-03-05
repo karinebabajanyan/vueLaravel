@@ -80,13 +80,14 @@
                 this.images=[];
                 for(let j=0;j<this.files.length;j++){
                     this.images.push(this.files[j])
-                    this.index.push(j);
+                    this.index.push('new'+j);
                 }
                 let length=this.index.length;
                 for (let i = 0; i < files.length; i++) {
                     this.files.push(files[i]);
                     this.images.push(files[i]);
-                    this.index.push(length+i);
+                    let c=length+i
+                    this.index.push('new'+c);
                 }
                 if (!this.files.length || this.post.files.length+this.files.length>10){
                     this.seen=false
@@ -106,7 +107,7 @@
               Handles the deleting of files
             */
             handleFilesRemove(key){
-                let index=this.index.indexOf(key);
+                let index=this.index.indexOf('new'+key);
                 this.$refs.image[key].parentElement.parentElement.style.display='none'
                 this.$refs.image[key].src='';
                 this.files.splice(index,1)
@@ -115,10 +116,12 @@
                         this.checked='old'+this.post.files[0].id
                     } else {
                         this.index.splice(index,1)
-                        this.checked='new'+this.index[index];
+                        this.checked=this.index[index];
                     }
                 }else{
                     this.index.splice(index,1)
+                    // console.log(this.checked.replace( /^\D+/g, ''))
+                    console.log(this.index.indexOf(this.checked))
                 }
             },
             handleFilesDelete(key){
@@ -133,7 +136,6 @@
                                 }else{
                                     this.checked='new'+this.index[0]
                                 }
-
                             } else {
                                 this.checked='old'+this.post.files[key+1].id
                             }
@@ -147,22 +149,26 @@
                 for(let i=0; i<this.files.length;i++){
 
                     this.form.append('pictures[]',this.files[i]);
-                    console.log(this.files[i]);
                 }
                 this.form.append('title',this.title);
                 this.form.append('description',this.description);
-                this.form.append('checked',this.checked);
+                if(this.checked.includes('new')){
+                    console.log('checked',this.index.indexOf(this.checked))
+                    this.form.append('checked',this.index.indexOf(this.checked));
+                }else{
+                    this.form.append('checked',this.checked);
+                }
                 this.form.append("_method", 'patch');
                 const config = { headers: { 'Content-Type': 'multipart/form-data'} };
                 document.getElementById('files').value=[];
                 // let currentObj = this;
-                console.log(this.form)
                 axios.post('/api/posts/'+this.post.id, this.form)
                     .then(response=>{
-                       window.location.href = '/posts';
+                        console.log(response)
+                        this.$router.push({ name: 'posts.index' })
                     })
                     .catch(function (error) {
-                        console.log(error)
+                        this.errors = error.response.data
                     });
                 this.form=new FormData
             }

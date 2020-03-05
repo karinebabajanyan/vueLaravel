@@ -18,9 +18,9 @@
                         </div>
                     </div>
                     <label style=" width: 100%;">Title:</label>
-                    <input type="text" class="form-control" v-model="title">
+                    <input type="text" class="form-control" v-model="title" name="title">
                     <label>Description:</label>
-                    <textarea class="form-control" v-model="description"></textarea>
+                    <textarea class="form-control" v-model="description" name="description"></textarea>
 
                     <button class="btn btn-primary" @click="formSubmit" style="margin-top: 10px">Submit</button>
                 </div>
@@ -32,7 +32,7 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
+            //
         },
         data() {
             return {
@@ -60,16 +60,15 @@
                 }
                 this.form.append('title',this.title);
                 this.form.append('description',this.description);
-                this.form.append('checked',this.checked);
+                this.form.append('checked',this.index.indexOf(this.checked));
                 const config = { headers: { 'Content-Type': 'multipart/form-data'} };
                 document.getElementById('files').value=[];
-                // let currentObj = this;
                 axios.post('/api/posts',this.form,config)
                     .then(response=>{
-                        window.location.href = '/posts';
+                        this.$router.push({ name: 'posts.index' })
                     })
                     .catch(function (error) {
-                        console.log(error)
+                        this.errors = error.response.data
                     });
                 this.form=new FormData
             },
@@ -77,10 +76,14 @@
                Handles the uploading of files
             */
             handleFilesUpload(e){
+                console.log(this.images)
+                console.log(this.files)
+                console.log(this.index)
                 let vm = this;
                 this.index=[];
                 var files = e.target.files;
                 this.images=[];
+                this.seen=true
                 for(let j=0;j<this.files.length;j++){
                     this.images.push(this.files[j])
                     this.index.push(j);
@@ -93,7 +96,8 @@
                 }
                 if (!this.files.length || this.files.length>10){
                     this.seen=false
-                    location.reload()
+                    this.files=[];
+                    console.log(this.files)
                 }else{
                     for (let i = 0; i < this.images.length; i++) {
                         let reader = new FileReader();
@@ -124,7 +128,9 @@
                         this.checked=this.index[index];
                     }
                 } else {
+                    console.log(this.index)
                     this.index.splice(index,1)
+                    console.log(this.index)
                 }
             },
         },

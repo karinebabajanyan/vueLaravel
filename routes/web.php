@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+Route::get('/', function () {
+    if(auth()->user()){
+        return view('spa');
+    }else{
+        return redirect('/login');
+    }
 
-
-Route::get('/{view?}', 'HomeController@posting')->where('view', '(.*)')->name('posting');
+});
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

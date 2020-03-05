@@ -113,7 +113,6 @@
                         });
                         this.slide2=arr2
                         this.cover2=item2
-                        console.log(this.slide2)
                     }
                 }).catch((error) => {
                     this.errors = error.response.data

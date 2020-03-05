@@ -17,7 +17,7 @@
 
 <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="{{ asset('css/imageUpload.css') }}">
-    <link rel="stylesheet" href="{{ url(mix('/css/app.css')) }}">
+    <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
 
 </head>
 <body>
@@ -49,37 +49,14 @@
                                 <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                             </li>
                         @endif
-                    @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
-                                <a class="dropdown-item" href="{{ url('/posts') }}">{{ __('Posts') }}</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
                     @endguest
                 </ul>
             </div>
         </div>
     </nav>
     <main class="py-4">
-        <div id="posts">
-        </div>
         @yield('content')
     </main>
 </div>
-<script src="{{ mix('js/app.js') }}" async defer></script>
 </body>
 </html>

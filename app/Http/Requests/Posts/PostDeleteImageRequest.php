@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Posts;
 
+use function GuzzleHttp\Psr7\_parse_request_uri;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Post;
 use App\File;
@@ -15,18 +16,8 @@ class PostDeleteImageRequest extends FormRequest
      */
     public function authorize()
     {
-        $file=File::find($this->route('post'))->where('fileable_type','posts')->first();
+        $file=File::find((int)$this->route('post'))->where('fileable_type','posts')->first();
         return auth()->user()->can('delete', Post::find($file->fileable_id));
-    }
-
-    /**
-     * Determine if the request is the result of an AJAX call.
-     *
-     * @return bool
-     */
-    public function ajax()
-    {
-        return $this->isXmlHttpRequest();
     }
 
     /**

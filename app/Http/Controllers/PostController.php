@@ -88,11 +88,10 @@ class PostController extends Controller
         if($file->where('category','checked')->first()){
             $file->where('category','checked')->first()->update(['category'=>NULL]);
         }
-        if($request->checked){
-                if(strpos($request->checked,'old')===false){
+            if(strpos($request->checked,'old')===false){
                     foreach ($request->pictures as $key=>$files){
                         $category=null;
-                        if($request->checked=='new'.$key){
+                        if((int)$request->checked==$key){
                             $category ='checked';
                         }
                         $fileService->saveFile($files, $post, $category);
@@ -107,7 +106,6 @@ class PostController extends Controller
                     $fileId=(int)preg_replace("/[^0-9\.]/", '',  $request->checked);
                     $file->find($fileId)->update(['category' => 'checked']);
                 }
-        }
         return response()->json([
             'message' => 'Updated successfully'
         ], 200);

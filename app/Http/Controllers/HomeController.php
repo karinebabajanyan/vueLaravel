@@ -23,11 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user=auth()->user();
-        return response()->json(['user' => $user], 200);
-    }
-    public function posting()
-    {
-        return view('layouts.app');
+        //
     }
 }

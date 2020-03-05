@@ -8,12 +8,13 @@ require('./bootstrap');
 require('bootstrap/js/src/index');
 import VueRouter from 'vue-router';
 import {router} from "./router";
-import welcome from './components/Welcome';
+import app from './components/App';
 import {Tabs, Tab} from 'vue-tabs-component';
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-
+import {store} from './store';
+// import Vuex from 'vuex'
 
 window.Vue = require('vue');
 
@@ -22,6 +23,7 @@ Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
 Vue.use(BootstrapVue);
+// Vue.use(Vuex)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,8 +36,7 @@ Vue.use(BootstrapVue);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('header-component', require('./components/layouts/Header.vue'));
-// Vue.component('footer-component', require('./components/layouts/Footer.vue'));
+Vue.component('nav-component', require('./components/NavComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,8 +44,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.use(VueRouter);
-const layoutOne = new Vue({
-    el: '#posts',
+const appComponent = new Vue({
+    el: '#app',
+    store,
     router: router,
-    render:h=>h(welcome)
+    components: {app}
 });
