@@ -76,9 +76,6 @@
                Handles the uploading of files
             */
             handleFilesUpload(e){
-                console.log(this.images)
-                console.log(this.files)
-                console.log(this.index)
                 let vm = this;
                 this.index=[];
                 var files = e.target.files;
@@ -97,7 +94,6 @@
                 if (!this.files.length || this.files.length>10){
                     this.seen=false
                     this.files=[];
-                    console.log(this.files)
                 }else{
                     for (let i = 0; i < this.images.length; i++) {
                         let reader = new FileReader();
@@ -120,17 +116,13 @@
                 if(key === this.checked) {
                     if(this.index[this.index.length-1] === key) {
                         this.index.splice(index,1)
-                        if(this.$el.querySelector('input[type="radio"]')!==null){
-                            this.checked=this.$el.querySelector('input[type="radio"]').value;
-                        }
+                        this.checked=this.index[0];
                     } else {
                         this.index.splice(index,1)
                         this.checked=this.index[index];
                     }
                 } else {
-                    console.log(this.index)
                     this.index.splice(index,1)
-                    console.log(this.index)
                 }
             },
         },

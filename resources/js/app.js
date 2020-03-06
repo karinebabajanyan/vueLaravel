@@ -11,6 +11,14 @@ import {router} from "./router";
 import app from './components/App';
 import {Tabs, Tab} from 'vue-tabs-component';
 import BootstrapVue from "bootstrap-vue";
+import {
+    ValidationObserver,
+    ValidationProvider,
+    extend,
+    localize
+} from "vee-validate";
+import en from "vee-validate/dist/locale/en.json";
+import * as rules from "vee-validate/dist/rules";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {store} from './store';
@@ -21,7 +29,16 @@ window.Vue = require('vue');
 
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
+// / Install VeeValidate rules and localization
+Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+});
 
+localize("en", en);
+
+// Install VeeValidate components globally
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("ValidationProvider", ValidationProvider);
 Vue.use(BootstrapVue);
 // Vue.use(Vuex)
 /**

@@ -27,8 +27,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user=auth()->user();
-        return response()->json(['user' => $user], 200);
+        $auth=auth()->user();
+        $users=User::where('id','!=' ,$auth->id)->get();
+        return response()->json(['users' => $users,'auth'=>$auth], 200);
     }
 
     /**
@@ -71,10 +72,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+       //
     }
 
-
+    /**
+     * Display the logged user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $user=auth()->user();
+        return response()->json(['user' => $user], 200);
+    }
 
     /**
      * Show the form for editing the specified resource.

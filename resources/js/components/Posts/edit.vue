@@ -112,16 +112,15 @@
                 this.$refs.image[key].src='';
                 this.files.splice(index,1)
                 if('new'+key===this.checked){
-                    if(this.index[this.index.length-1] === key) {
+                    if(this.index[this.index.length-1] === 'new'+key) {
                         this.checked='old'+this.post.files[0].id
+                        this.index.splice(index,1)
                     } else {
                         this.index.splice(index,1)
                         this.checked=this.index[index];
                     }
                 }else{
                     this.index.splice(index,1)
-                    // console.log(this.checked.replace( /^\D+/g, ''))
-                    console.log(this.index.indexOf(this.checked))
                 }
             },
             handleFilesDelete(key){
@@ -134,7 +133,7 @@
                                 if(this.index.length===0){
                                     this.checked='old'+this.post.files[0].id
                                 }else{
-                                    this.checked='new'+this.index[0]
+                                    this.checked=this.index[0]
                                 }
                             } else {
                                 this.checked='old'+this.post.files[key+1].id
@@ -153,7 +152,6 @@
                 this.form.append('title',this.title);
                 this.form.append('description',this.description);
                 if(this.checked.includes('new')){
-                    console.log('checked',this.index.indexOf(this.checked))
                     this.form.append('checked',this.index.indexOf(this.checked));
                 }else{
                     this.form.append('checked',this.checked);
@@ -164,7 +162,6 @@
                 // let currentObj = this;
                 axios.post('/api/posts/'+this.post.id, this.form)
                     .then(response=>{
-                        console.log(response)
                         this.$router.push({ name: 'posts.index' })
                     })
                     .catch(function (error) {

@@ -26,7 +26,7 @@ export const store = new Vuex.Store({
     },
     actions: {
         GET_USER: async (context, user) => {
-            let {data} = await Axios.get('api/users');
+            let {data} = await Axios.get('api/users/profile');
             context.commit('SET_USER', data.user);
             console.log(1);
         },

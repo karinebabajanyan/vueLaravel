@@ -1,7 +1,6 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="info">
-            <b-navbar-brand href="/login">Laravel</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -12,7 +11,7 @@
                         <template v-slot:button-content>
                             <em>{{userName}}</em>
                         </template>
-                        <b-dropdown-item><router-link to="/users">Profile</router-link></b-dropdown-item>
+                        <b-dropdown-item><router-link to="/profile">Profile</router-link></b-dropdown-item>
                         <b-dropdown-item><router-link to="/posts">Posts</router-link></b-dropdown-item>
                         <b-dropdown-item href="/logout">Sign Out</b-dropdown-item>
                     </b-nav-item-dropdown>
@@ -34,13 +33,7 @@
 
         },
         methods: {
-            routes(){
-                axios.post('/logout').then(response => {
-                    window.location='/login'
-                }).catch((error) => {
-                    console.log(error);
-                });
-            }
+           //
         },
         created(){
             //

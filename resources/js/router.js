@@ -14,9 +14,26 @@ export const router = new VueRouter({
                 name: 'app',
             },
             {
+                path: '/users',
+                component: Vue.component('users-index', () => import('./components/Users/index.vue')),
+                name: 'users.index',
+            },
+            {
+                path: '/users/create',
+                component: Vue.component('users-create', () => import('./components/Users/create.vue')),
+                name: 'users/create',
+            },
+            {
                 path: '/profile',
-                component: Vue.component('users', () => import('./components/Users/index.vue')),
-                name: 'users',
+                component: Vue.component('users-profile', () => import('./components/Users/profile.vue')),
+                name: 'users.profile',
+                props: true
+            },
+            {
+                path: '/users/edit',
+                component: Vue.component('users-edit', () => import('./components/Users/edit.vue')),
+                name: 'users.edit',
+                props: true
             },
             {
                 path: '/posts',
