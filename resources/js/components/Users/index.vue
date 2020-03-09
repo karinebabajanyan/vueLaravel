@@ -77,6 +77,7 @@
     export default {
         data() {
             return {
+                form: new FormData,
                 fields: [],
                 items: [],
                 states:{
@@ -86,7 +87,7 @@
                 infoModal: {
                     id: 'modal-prevent-closing',
                     title: '',
-                    content: ''
+                    content: {}
                 },
                 options: [
                     { value: 'user', text: 'User' },
@@ -120,6 +121,22 @@
             handleOk(bvModalEvt) {
                 // Prevent modal from closing
                 bvModalEvt.preventDefault()
+//                const formData = new FormData();
+//                $.each(this.infoModal.content, function(key, value) {
+//                    this.form.append(key,value)
+//                })
+//                console.log(this.infoModal.content);
+//                console.log(JSON.stringify(this.infoModal.content));
+                this.form.append('user',JSON.stringify(this.infoModal.content))
+//                console.log(formData);
+                axios.put('/api/users/'+this.infoModal.content.id, this.form)
+                    .then(response=>{
+                        console.log(response)
+//                        this.$router.push({ name: 'posts.index' })
+                    })
+                    .catch(function (error) {
+                        this.errors = error.response.data
+                    });
                 // Trigger submit handler
                 this.handleSubmit()
             },
@@ -136,7 +153,10 @@
             },
             info(item, index, button) {
                 this.infoModal.title = `Row id: ${index}`
-                this.infoModal.content=item
+                this.infoModal.content.name=item.name
+                this.infoModal.content.email=item.email
+                this.infoModal.content.role=item.role
+                this.infoModal.content.id=item.id
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
             fetchData() {

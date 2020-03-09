@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
 use App\Http\Services\FileService;
 use Auth;
 use App\User;
 use App\File;
 use App\SocialIdentity;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Users\UserStoreRequest;
 use App\Http\Requests\Users\UserUpdateRequest;
@@ -16,7 +16,6 @@ use App\Http\Requests\Users\UserCreateRequest;
 use App\Http\Requests\Users\UserEditRequest;
 use App\Http\Requests\Users\UserDestroyRequest;
 use App\Http\Requests\Users\UserShowRequest;
-
 
 class UserController extends Controller
 {
@@ -37,9 +36,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(UserCreateRequest $request)
+    public function create()
     {
-
+        //
     }
 
     /**
@@ -48,20 +47,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserStoreRequest $request)
+    public function store(Request $request)
     {
-
-    }
-
-    /**
-     * Display the specified user.
-     *
-     * @param  UserShowRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function user(UserShowRequest $request)
-    {
-
+        //
     }
 
     /**
@@ -72,18 +60,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-       //
-    }
-
-    /**
-     * Display the logged user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function profile()
-    {
-        $user=auth()->user();
-        return response()->json(['user' => $user], 200);
+        //
     }
 
     /**
@@ -92,7 +69,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user,UserEditRequest $request)
+    public function edit($id)
     {
         //
     }
@@ -104,9 +81,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-
+        dump($id);
+        die();
     }
 
     /**
@@ -115,8 +93,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, UserDestroyRequest $request)
+    public function destroy($id)
     {
-       //
+        //
+    }
+
+    /**
+     * Display the logged user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $user=auth()->user();
+        return response()->json(['user' => $user], 200);
     }
 }
