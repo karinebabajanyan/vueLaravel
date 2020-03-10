@@ -37,8 +37,8 @@ Object.keys(rules).forEach(rule => {
 localize("en", en);
 
 // Install VeeValidate components globally
-Vue.component("ValidationObserver", ValidationObserver);
-Vue.component("ValidationProvider", ValidationProvider);
+// Vue.component("ValidationObserver", ValidationObserver);
+// Vue.component("ValidationProvider", ValidationProvider);
 Vue.use(BootstrapVue);
 // Vue.use(Vuex)
 /**
