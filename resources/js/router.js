@@ -19,20 +19,9 @@ export const router = new VueRouter({
                 name: 'users.index',
             },
             {
-                path: '/users/create',
-                component: Vue.component('users-create', () => import('./components/Users/create.vue')),
-                name: 'users/create',
-            },
-            {
                 path: '/profile',
                 component: Vue.component('users-profile', () => import('./components/Users/profile.vue')),
                 name: 'users.profile',
-                props: true
-            },
-            {
-                path: '/users/edit',
-                component: Vue.component('users-edit', () => import('./components/Users/edit.vue')),
-                name: 'users.edit',
                 props: true
             },
             {

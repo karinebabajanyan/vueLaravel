@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Services\FileService;
 use Auth;
 use App\User;
@@ -17,7 +17,6 @@ use App\Http\Requests\Users\UserEditRequest;
 use App\Http\Requests\Users\UserDestroyRequest;
 use App\Http\Requests\Users\UserShowRequest;
 
-
 class UserController extends Controller
 {
     /**
@@ -28,18 +27,9 @@ class UserController extends Controller
     public function index()
     {
         $auth=auth()->user();
+        $isAdmin=$auth->isAdmin();
         $users=User::where('id','!=' ,$auth->id)->get();
-        return response()->json(['users' => $users,'auth'=>$auth], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(UserCreateRequest $request)
-    {
-
+        return response()->json(['users' => $users,'auth'=>$auth,'isAdmin'=>$isAdmin], 200);
     }
 
     /**
@@ -48,20 +38,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserStoreRequest $request)
+    public function store(Request $request)
     {
-
-    }
-
-    /**
-     * Display the specified user.
-     *
-     * @param  UserShowRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function user(UserShowRequest $request)
-    {
-
+        $userModel=new User;
+        User::create($request->only($userModel->getFillable()));
+        return response()->json([
+            'message' => 'Success'
+        ], 200);
     }
 
     /**
@@ -71,28 +54,6 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-       //
-    }
-
-    /**
-     * Display the logged user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function profile()
-    {
-        $user=auth()->user();
-        return response()->json(['user' => $user], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user,UserEditRequest $request)
     {
         //
     }
@@ -104,9 +65,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(Request $request, $id)
     {
-
+        $userModel=new User;
+        $user=User::find($id)->update($request->only($userModel->getFillable()));
+        dd($request->only($userModel->getFillable()));
+        //
+        return response()->json([
+            'message' => 'Success'
+        ], 200);
     }
 
     /**
@@ -115,8 +82,36 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, UserDestroyRequest $request)
+    public function destroy($id)
     {
-       //
+       $user=User::find($id);
+        if($user->delete()) {
+            $posts=$user->posts;
+            if($posts){
+                foreach ($posts as $key => $post) {
+                    $images=$post->files;
+                    if($images){
+                        foreach ($images as $k => $image) {
+                            $image->delete();
+                        }
+                    }
+                    $post->delete();
+                }
+            }
+        }
+        return response()->json([
+            'message' => 'Success'
+        ], 200);
+    }
+
+    /**
+     * Display the logged user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $user=auth()->user();
+        return response()->json(['user' => $user], 200);
     }
 }
