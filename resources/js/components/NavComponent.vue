@@ -9,10 +9,11 @@
                     <b-nav-item-dropdown right>
                         <!-- Using 'button-content' slot -->
                         <template v-slot:button-content>
-                            <em>{{userName}}</em>
+                            <em>{{user.name}}</em>
                         </template>
                         <b-dropdown-item><router-link to="/profile">Profile</router-link></b-dropdown-item>
                         <b-dropdown-item><router-link to="/posts">Posts</router-link></b-dropdown-item>
+                        <b-dropdown-item><router-link to="/users">Users List</router-link></b-dropdown-item>
                         <b-dropdown-item href="/logout">Sign Out</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -40,8 +41,8 @@
         },
 
         computed: {
-            userName() {
-                return this.$store.getters.USER.name;
+            user() {
+                return this.$store.getters.USER;
             },
         }
     }

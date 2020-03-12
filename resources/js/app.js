@@ -11,36 +11,17 @@ import {router} from "./router";
 import app from './components/App';
 import {Tabs, Tab} from 'vue-tabs-component';
 import BootstrapVue from "bootstrap-vue";
-import {
-    ValidationObserver,
-    ValidationProvider,
-    extend,
-    localize
-} from "vee-validate";
-import en from "vee-validate/dist/locale/en.json";
-import * as rules from "vee-validate/dist/rules";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {store} from './store';
-// import Vuex from 'vuex'
 
 window.Vue = require('vue');
 
-
 Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
-// / Install VeeValidate rules and localization
-Object.keys(rules).forEach(rule => {
-    extend(rule, rules[rule]);
-});
 
-localize("en", en);
 
-// Install VeeValidate components globally
-// Vue.component("ValidationObserver", ValidationObserver);
-// Vue.component("ValidationProvider", ValidationProvider);
 Vue.use(BootstrapVue);
-// Vue.use(Vuex)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -48,9 +29,6 @@ Vue.use(BootstrapVue);
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('nav-component', require('./components/NavComponent.vue').default);

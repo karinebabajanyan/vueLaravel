@@ -21,5 +21,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 
 Route::resource('posts', 'PostController')->middleware('auth');
 Route::get('users/profile', 'UserController@profile')->name('users.profile')->middleware('auth');
+Route::post('users/image', 'UserController@updateProfileImage')->name('users.image')->middleware('auth');
 Route::resource('users', 'UserController')->middleware('auth');
 Route::post('posts/{post}/','PostController@deleteImage')->name('posts.deleteImage')->middleware('auth');

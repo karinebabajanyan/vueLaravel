@@ -87,6 +87,10 @@ class UserController extends Controller
        $user=User::find($id);
         if($user->delete()) {
             $posts=$user->posts;
+            $cover=$user->cover_image;
+            if($cover){
+                $cover->delete();
+            }
             if($posts){
                 foreach ($posts as $key => $post) {
                     $images=$post->files;
@@ -112,6 +116,28 @@ class UserController extends Controller
     public function profile()
     {
         $user=auth()->user();
-        return response()->json(['user' => $user], 200);
+        $cover=$user->cover_image;
+        $isAdmin=$user->isAdmin();
+        return response()->json(['user' => $user,'cover'=>$cover,'isAdmin'=>$isAdmin], 200);
+    }
+    /**
+     * Update the Profile Image in storage.
+     *
+     * @param  UserUpdateProfileImageRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfileImage(Request $request, FileService $fileService)
+    {
+        $image = $request->avatar;
+        $user = auth()->user();
+        $imageExists=$user->cover_image;
+        if($imageExists){
+            $imageExists->delete();
+        }
+        $fileService->saveFile($image,$user,'cover');
+
+        return response()->json([
+            'message' => 'Success'
+        ], 200);
     }
 }
