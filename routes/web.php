@@ -11,13 +11,15 @@
 |
 */
 
-Auth::routes();
-Route::get('/', function () {
+Auth::routes([
+    'verify' => true,
+    'reset' => false
+]);
+Route::middleware(['auth','verified'])->get('/', function () {
     if(auth()->user()){
         return view('spa');
     }else{
         return redirect('/login');
     }
-
 });
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

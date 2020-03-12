@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -20,7 +20,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'confirmed_at'
+        'confirmed_at',
+        'email_verified_at'
     ];
 
     /**
@@ -33,6 +34,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $changes=[
+        "email_verified_at",
+        "updated_at"
+    ];
     /**
      * Get the posts of the user.
      *

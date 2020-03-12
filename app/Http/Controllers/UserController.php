@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Services\FileService;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\File;
 use App\SocialIdentity;
@@ -40,8 +41,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $userModel=new User;
-        User::create($request->only($userModel->getFillable()));
+        User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=>Hash::make($request->password),
+            'email_verified_at'=>date('Y-m-d H:i:s')
+        ]);
         return response()->json([
             'message' => 'Success'
         ], 200);
@@ -67,10 +72,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $userModel=new User;
-        $user=User::find($id)->update($request->only($userModel->getFillable()));
-        dd($request->only($userModel->getFillable()));
-        //
+        $data=['name'=>$request->name,'email'=>$request->email,];
+        if($request->password){
+            $data['password']=Hash::make($request->password);
+        }
+        User::find($id)->update($data);
         return response()->json([
             'message' => 'Success'
         ], 200);
