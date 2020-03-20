@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     export default {
         name: "NavComponent",
         data(){
@@ -41,9 +42,10 @@
         },
 
         computed: {
-            user() {
-                return this.$store.getters.USER;
-            },
+            ...mapGetters({
+                // map `this.user` to `this.$store.getters.USER`
+                user: 'USER'
+            })
         }
     }
 </script>

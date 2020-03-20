@@ -21,7 +21,7 @@ export const router = new VueRouter({
             {
                 path: '/profile',
                 component: Vue.component('users-profile', () => import('./components/Users/profile.vue')),
-                name: 'users.profile',
+                name: 'modules.profile',
                 props: true
             },
             {

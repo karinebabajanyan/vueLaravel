@@ -1,43 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Axios from 'axios';
+import user from './modules/user'
 
 Vue.use(Vuex);
 // import Axios from 'axios';
+const debug = process.env.NODE_ENV !== 'production'
+
 export const store = new Vuex.Store({
-    state: {
-        user:{
-            name:'',
-            id:'',
-            email:'',
-        },
-        cover:''
+    modules: {
+        user,
     },
-    getters: {
-        USER: state => {
-            return state.user;
-        },
-        COVER: state => {
-            return state.cover;
-        },
-    },
-    mutations: {
-        SET_USER: (state, user,admin) => {
-            state.user.name=user.name;
-            state.user.id=user.id;
-            state.user.email=user.email;
-        },
-        SET_COVER: (state, cover) => {
-            if(cover){
-                state.cover=cover.path
-            }
-        },
-    },
-    actions: {
-        GET_USER: async (context, user) => {
-            let {data} = await Axios.get('api/users/profile');
-            context.commit('SET_USER', data.user);
-            context.commit('SET_COVER', data.cover);
-        },
-    },
+    strict: debug,
 });

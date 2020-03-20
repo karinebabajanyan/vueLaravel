@@ -2,14 +2,17 @@
     <div class="container">
         <div class="row justify-content-center">
             <div style="width: 80%; margin: 0 auto;">
+                <b-alert variant="danger" v-if="error" show>{{error}}</b-alert>
                 <div class="form-group">
                     <div class="large-12 medium-12 small-12 cell">
-                        <label class="btn btn-outline-secondary">Files
+                        <label v-if="error" aria-disabled="true" class="btn btn-outline-secondary disabled">Files
+                        </label>
+                        <label v-else="true" class="btn btn-outline-secondary">Files
                             <input type="file" id="files" accept="image/*" multiple @change="handleFilesUpload"/>
                         </label>
                     </div>
                     <div class="img-upload-preview">
-                        <div v-for="(image, k) in post.files" class="cc-selector-2 previewImage" v-show="seen">
+                        <div v-for="(image, k) in post.files" class="cc-selector-2 previewImage">
                             <div>
                                 <input type="radio" name="check" :id="'old'+k"  :value="'old'+image.id" v-model="checked">
                                 <label class="preview drinkcard-cc" :for="'old'+k"><img :src="image.path"/></label>
@@ -25,11 +28,14 @@
                         </div>
                     </div>
                     <label style=" width: 100%;">Title:</label>
-                    <input type="text" class="form-control" v-model="title">
+                    <input type="text" v-if="error" class="form-control" disabled>
+                    <input type="text" v-else="true" class="form-control" v-model="title">
                     <label>Description:</label>
-                    <textarea class="form-control" v-model="description"></textarea>
+                    <textarea v-if="error" class="form-control" disabled></textarea>
+                    <textarea v-else="true" class="form-control" v-model="description"></textarea>
 
-                    <button class="btn btn-primary" @click="formSubmit" style="margin-top: 10px">Submit</button>
+                    <button class="btn btn-primary" v-if="error" style="margin-top: 10px" disabled>Submit</button>
+                    <button class="btn btn-primary" v-else="true" @click="formSubmit" style="margin-top: 10px">Submit</button>
                 </div>
             </div>
         </div>
@@ -55,6 +61,7 @@
                 $refs:'',
                 checked:0,
                 seen:true,
+                error:'',
             }
         },
         methods: {
@@ -62,12 +69,20 @@
                 axios.get('/api/posts/'+this.$route.query.id).then(response => {
                     if(response.status === 200)
                     {
+                        let that=this;
                         this.post = response.data.post
                         this.title=this.post.title
                         this.description=this.post.description;
+                        $.each(response.data.post.files, function(k, file) {
+                            if(file.category==='checked'){
+                                that.checked='old'+file.id;
+                            }
+                        });
                     }
+                    console.log(this.checked)
                 }).catch((error) => {
-                    this.errors = error.response.data
+                    console.log(error)
+                    this.error = error.message
                 })
             },
             /*
@@ -91,7 +106,7 @@
                 }
                 if (!this.files.length || this.post.files.length+this.files.length>10){
                     this.seen=false
-                    location.reload()
+                    this.files=[];
                 }else{
                     for (let i = 0; i < this.images.length; i++) {
                         let reader = new FileReader();
@@ -141,7 +156,7 @@
                         }
                     }
                 }).catch((error) => {
-                    this.errors = error.response.data
+                    this.error = error.message
                 })
             },
             formSubmit(){
@@ -165,13 +180,14 @@
                         this.$router.push({ name: 'posts.index' })
                     })
                     .catch(function (error) {
-                        this.errors = error.response.data
+                        console.log(error)
+                        this.error = error.message
                     });
                 this.form=new FormData
             }
         },
         created() {
-            this.checked='old'+parseInt(this.$route.query.cover);
+//            this.checked='old'+parseInt(this.$route.query.cover);
             this.showData()
 
         }

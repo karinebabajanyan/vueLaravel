@@ -14,6 +14,7 @@ import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {store} from './store';
+import Vuelidate from 'vuelidate';
 
 window.Vue = require('vue');
 
@@ -22,6 +23,7 @@ Vue.component('tab', Tab);
 
 
 Vue.use(BootstrapVue);
+Vue.use(Vuelidate);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -43,5 +45,6 @@ const appComponent = new Vue({
     el: '#app',
     store,
     router: router,
+    // validations: {},
     components: {app}
 });

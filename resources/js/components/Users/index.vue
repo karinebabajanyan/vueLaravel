@@ -1,5 +1,7 @@
 <template>
     <div class="container">
+        <b-alert variant="danger" v-if="error" show>{{error}}</b-alert>
+        <b-alert variant="success" v-if="success" show>{{success}}</b-alert>
         <p v-if="isAdmin">
             <b-button size="sm" @click="addInfo($event.target)" class="mr-1">
                 Add
@@ -102,10 +104,6 @@
                             required
                         ></b-form-input>
                     </b-form-group>
-                    <!--<div class="text-right">-->
-                        <!--<b-button pill variant="success" style="margin-right:10px" @click="saveData">Save</b-button>-->
-                        <!--<b-button pill variant="danger" @click="cancel">Cancel</b-button>-->
-                    <!--</div>-->
                 </form>
             </template>
         </b-modal>
@@ -113,6 +111,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     export default {
         data() {
             return {
@@ -123,6 +122,8 @@
                 states:{
                     name:null,
                     email:null,
+                    password:'',
+                    confirmPass:'',
                 },
                 infoModal: {
                     id: 'modal-prevent-closing',
@@ -146,9 +147,14 @@
                     confirmPass:'',
                 },
                 modalCategory:'',
+                error:'',
+                success:'',
             }
         },
         methods: {
+            ...mapActions({
+                user: 'GET_USER' // map `this.user()` to `this.$store.dispatch('GET_USER')`
+            }),
             checkFormValidity() {
                 let valid=true;
                 this.states.password=null;
@@ -250,56 +256,61 @@
                 // Prevent modal from closing
                 bvModalEvt.preventDefault()
 
-                let that=this;
-                $.each(this.infoModal.content, function(key, value) {
-                    if(key==='password'){
-                        if(value!==''){
-                            that.form.append(String(key), value)
-                        }
-                    }else if(key!=='confirmPass'){
-                        that.form.append(String(key), value)
-                    }
-                })
-                if(this.modalCategory==='update'){
-                    this.form.append("_method", 'patch');
-                    axios.post('/api/users/'+this.infoModal.content.id, this.form)
-                        .then(response=>{
-                            this.fetchData();
-                            this.$store.dispatch('GET_USER');
-                        })
-                        .catch(function (error) {
-                            this.errors = error.response.data
-                        });
-                }else if(this.modalCategory==='add'){
-                    axios.post('api/users/', this.form)
-                        .then(response=>{
-                            this.fetchData();
-                            this.$store.dispatch('GET_USER');
-                        })
-                        .catch(function (error) {
-                            this.errors = error.response.data
-                        });
-                }
-
-                this.form=new FormData
-                // Trigger submit handler
-                this.handleSubmit()
-            },
-            handleSubmit() {
                 // Exit when the form isn't valid
                 if (!this.checkFormValidity()) {
                     return
+                }else {
+                    let that = this;
+                    $.each(this.infoModal.content, function (key, value) {
+                        if (key === 'password') {
+                            if (value !== '') {
+                                that.form.append(String(key), value)
+                            }
+                        } else if (key !== 'confirmPass') {
+                            that.form.append(String(key), value)
+                        }
+                    })
+                    if (this.modalCategory === 'update') {
+                        let that = this
+                        this.form.append("_method", 'patch');
+                        axios.post('/api/users/' + this.infoModal.content.id, this.form)
+                            .then(response => {
+                                that.error = '';
+                                that.success = 'User is successfully updated';
+                                this.fetchData();
+                                this.user();
+                            })
+                            .catch(function (error) {
+                                that.success = '';
+                                that.error = error.message
+                            });
+                    } else if (this.modalCategory === 'add') {
+                        let that = this
+                        axios.post('api/users', this.form)
+                            .then(response => {
+                                that.error = '';
+                                that.success = 'User is successfully added';
+                                that.fetchData();
+                                that.user();
+                            })
+                            .catch(function (error) {
+                                that.success = '';
+                                that.error = error.message
+                            });
+                    }
+
+                    this.form = new FormData
+                    this.$nextTick(() => {
+                        setTimeout(function(){
+                            that.$bvModal.hide('modal-prevent-closing')
+                        }, 500);
+                    })
                 }
-                // Push the name to submitted names
-                // Hide the modal manually
-                let that=this
-                this.$nextTick(() => {
-                    setTimeout(function(){
-                        that.$bvModal.hide('modal-prevent-closing')
-                    }, 500);
-                })
+                // Trigger submit handler
             },
             info(item, index, button) {
+                this.states.password=null;
+                this.states.confirmPass=null;
                 this.infoModal.content={}
                 this.infoModal.title = 'User Update'
                 this.infoModal.content.name=item.name
@@ -312,6 +323,8 @@
                 this.$root.$emit('bv::show::modal', this.infoModal.id, button)
             },
             addInfo(button){
+                this.states.password=null;
+                this.states.confirmPass=null;
                 this.infoModal.content={}
                 this.infoModal.title = 'Add User'
                 this.infoModal.content.name=''
@@ -325,14 +338,17 @@
             },
             dataDelete(id){
                 if(confirm("Do you really want to delete?")){
-                    // console.log(id);
+                    let that = this;
                     axios.delete('/api/users/'+id)
                         .then(response => {
-                            this.fetchData();
-                            this.$store.dispatch('GET_USER');
+                            that.error = '';
+                            that.success = 'User is successfully deleted';
+                            that.fetchData();
+                            that.user()
                         })
                         .catch(error => {
-                            console.log(error);
+                            that.success = '';
+                            that.error = error.message
                         })
                 }
             },
@@ -362,7 +378,7 @@
                     })
                     this.items=item;
                 }).catch((error) => {
-                    this.errors = error.response.data
+                    this.error = error.message
                 })
             },
         },

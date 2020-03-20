@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <b-alert variant="danger" v-if="error" show>{{error}}</b-alert>
         <div class="row justify-content-center">
             <div style="width: 80%; margin: 0 auto;">
                 <div class="form-group">
@@ -7,6 +8,7 @@
                         <label class="btn btn-outline-secondary">Files
                             <input type="file" id="files" accept="image/*" multiple @change="handleFilesUpload"/>
                         </label>
+                        <p v-if="!$v.file.required" style="color: red">{{ errors.file }}</p>
                     </div>
                     <div class="img-upload-preview">
                         <div v-for="(image, key) in images" class="cc-selector-2 previewImage" v-show="seen">
@@ -17,11 +19,12 @@
                             </div>
                         </div>
                     </div>
-                    <label style=" width: 100%;">Title:</label>
-                    <input type="text" class="form-control" v-model="title" name="title">
-                    <label>Description:</label>
-                    <textarea class="form-control" v-model="description" name="description"></textarea>
-
+                        <label style=" width: 100%;">Title:</label>
+                        <input type="text" class="form-control" v-model.trim="$v.title.$model" name="title" />
+                        <p v-if="!$v.title.required" style="color: red">{{ errors.title }}</p>
+                        <label>Description:</label>
+                        <textarea class="form-control" v-model="$v.description.$model" name="description"></textarea>
+                        <p v-if="!$v.description.required" style="color: red">{{ errors.description }}</p>
                     <button class="btn btn-primary" @click="formSubmit" style="margin-top: 10px">Submit</button>
                 </div>
             </div>
@@ -30,14 +33,24 @@
 </template>
 
 <script>
+//    import { ValidationProvider } from 'vee-validate';
+//    import { required } from 'vee-validate/dist/rules';
+
+import { required } from 'vuelidate/lib/validators';
+
     export default {
         mounted() {
-            //
+            console.log(this.$v)
         },
         data() {
             return {
-                title: '',
-                description: '',
+                errors:{
+                    title:'',
+                    description:'',
+                    file:'',
+                },
+                title:'',
+                description:'',
                 form: new FormData,
                 files: [],
                 isClicked:false,
@@ -46,7 +59,19 @@
                 $refs:'',
                 checked:0,
                 seen:true,
+                error:'',
             };
+        },
+        validations: {
+            title: {
+                required
+            },
+            description: {
+                required
+            },
+            file: {
+                required
+            },
         },
         methods: {
             /*
@@ -54,28 +79,51 @@
             */
             formSubmit(e) {
                 // e.preventDefault();
-                for(let i=0; i<this.files.length;i++){
-
-                    this.form.append('pics[]',this.files[i]);
+                let valid=true;
+                if(this.title===''){
+                    valid=false;
+                    this.errors.title='Title is required';
+                }else{
+                    this.errors.title='';
                 }
-                this.form.append('title',this.title);
-                this.form.append('description',this.description);
-                this.form.append('checked',this.index.indexOf(this.checked));
-                const config = { headers: { 'Content-Type': 'multipart/form-data'} };
-                document.getElementById('files').value=[];
-                axios.post('/api/posts',this.form,config)
-                    .then(response=>{
-                        this.$router.push({ name: 'posts.index' })
-                    })
-                    .catch(function (error) {
-                        this.errors = error.response.data
-                    });
-                this.form=new FormData
+                if(this.description===''){
+                    valid=false;
+                    this.errors.description='Description is required';
+                }else{
+                    this.errors.description='';
+                }
+                if(this.files.length<=0){
+                    valid=false;
+                    this.errors.file='Files is required';
+                }else{
+                    this.errors.file=null;
+                }
+                console.log(this.errors)
+                if(valid) {
+                    for (let i = 0; i < this.files.length; i++) {
+
+                        this.form.append('pics[]', this.files[i]);
+                    }
+                    this.form.append('title', this.title);
+                    this.form.append('description', this.description);
+                    this.form.append('checked', this.index.indexOf(this.checked));
+                    const config = {headers: {'Content-Type': 'multipart/form-data'}};
+                    document.getElementById('files').value = [];
+                    axios.post('/api/posts', this.form, config)
+                        .then(response => {
+                            this.$router.push({name: 'posts.index'})
+                        })
+                        .catch(function (error) {
+                            this.error = error.message
+                        });
+                    this.form = new FormData
+                }
             },
             /*
                Handles the uploading of files
             */
             handleFilesUpload(e){
+                this.errors.file='';
                 let vm = this;
                 this.index=[];
                 var files = e.target.files;
@@ -123,6 +171,9 @@
                     }
                 } else {
                     this.index.splice(index,1)
+                }
+                if(this.files.length<=0){
+                    this.checked=0;
                 }
             },
         },

@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <b-alert variant="danger" v-if="error" show>{{error}}</b-alert>
         <p>
             <router-link to="/posts/create">Add New Post</router-link>
         </p>
@@ -24,7 +25,7 @@
                                         <h4 class="media-heading">{{post1.title}}</h4>
                                         <p class="desc">{{post1.description}}</p>
                                         <p>
-                                            <router-link :to="{ name: 'posts.show', query: { id: post1.id, cover: cover1[k1] }}">See More</router-link>
+                                            <router-link :to="{ name: 'posts.show', query: { id: post1.id }}">See More</router-link>
                                         </p>
                                     </b-media>
                                 </ul>
@@ -50,7 +51,7 @@
                                         <h4 class="media-heading">{{post2.title}}</h4>
                                         <p class="desc">{{post2.description}}</p>
                                         <p>
-                                            <router-link :to="{ name: 'posts.show', query: { id: post2.id, cover: cover2[k2] }}">See More</router-link>
+                                            <router-link :to="{ name: 'posts.show', query: { id: post2.id }}">See More</router-link>
                                         </p>
                                     </b-media>
                                 </ul>
@@ -72,12 +73,10 @@
             return{
                 slide1: [],
                 slide2: [],
-                cover1:0,
-                cover2:0,
                 posts: [],
                 allPosts: [],
                 myPosts: [],
-                errors: '',
+                error: '',
             }
         },
         methods: {
@@ -85,37 +84,30 @@
                 axios.get('api/posts').then(response => {
                     if(response.status === 200)
                     {
-
                         this.posts = response.data
                         this.allPosts = response.data.allPosts
                         this.myPosts = response.data.myPosts
                         let arr1=[];
                         let arr2=[];
-                        let item1=[];
-                        let item2=[];
                         $.each(this.allPosts, function(k1, post1) {
                             $.each(post1.files, function(key1, file1) {
                                 if(file1.category==='checked'){
                                     arr1.push(key1)
-                                    item1.push(key1);
                                 }
                             });
                         });
                         this.slide1=arr1
-                        this.cover1=item1
                         $.each(this.myPosts, function(k2, post2) {
                             $.each(post2.files, function(key2, file2) {
                                 if(file2.category==='checked'){
                                     arr2.push(key2)
-                                    item2.push(key2)
                                 }
                             });
                         });
                         this.slide2=arr2
-                        this.cover2=item2
                     }
                 }).catch((error) => {
-                    this.errors = error.response.data
+                    this.error = error.message
                 })
             },
         },

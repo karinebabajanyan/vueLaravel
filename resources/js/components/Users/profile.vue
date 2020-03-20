@@ -2,6 +2,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <b-alert variant="danger" v-if="error" show>{{error}}</b-alert>
+                <b-alert variant="danger" v-if="userError" show>{{userError}}</b-alert>
                 <picture-input
                     ref="pictureInput"
                     width="600"
@@ -21,7 +23,8 @@
 </template>
 
 <script>
-    import PictureInput from 'vue-picture-input'
+    import PictureInput from '../PictureInput'
+    import { mapGetters } from 'vuex'
     export default {
         mounted() {
             console.log('Component mounted.')
@@ -31,6 +34,7 @@
                 name: '',
                 email: '',
                 form: new FormData,
+                error:'',
             };
         },
         components: {
@@ -38,6 +42,7 @@
         },
         methods: {
             onChange (file) {
+                let that = this;
                 this.form.append('avatar',file);
                 const config = { headers: { 'Content-Type': 'multipart/form-data'} };
                 axios.post('/api/users/image',this.form,config)
@@ -45,7 +50,7 @@
                       //
                     })
                     .catch(function (error) {
-                        this.errors = error.response.data
+                        that.error = error.message
                     });
                 this.form=new FormData
                 console.log(file)
@@ -56,9 +61,11 @@
             //
         },
         computed: {
-            user() {
-                return this.$store.getters.USER;
-            },
+           ...mapGetters({
+                // map `this.user` to `this.$store.getters.USER`
+                user: 'USER',
+               userError: 'USERERROR'
+            })
         }
     }
 </script>
